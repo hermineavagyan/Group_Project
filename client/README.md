@@ -1,2 +1,2 @@
-# Group Project with MERN 
+# Group Project with MERN! 
 
