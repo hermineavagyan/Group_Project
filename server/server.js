@@ -11,6 +11,8 @@ app.use(cors())
 
 require('./config/mongoose.config')
 require('./routes/item.routes')(app)
+require('./routes/user.routes')(app)
+
 
 
 
