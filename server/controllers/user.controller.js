@@ -33,12 +33,23 @@ module.exports = {
                                 console.log("password is valid");
                                 res.cookie(
                                     "usertoken",
+                                    // jwt.sign(
+                                    //     {
+                                    //         id: userRecord._id,
+                                    //         email: userRecord.email,
+                                    //         username: userRecord.username
+                                    //     },
                                     jwt.sign(
                                         {
                                             id: userRecord._id,
                                             email: userRecord.email,
-                                            username: userRecord.username
+                                            //username: userRecord.username,
+                                            user_type: userRecord.user_type,
+                                            name: userRecord.name
+
                                         },
+
+
                                 
                                         process.env.JWT_SECRET
                                     ),

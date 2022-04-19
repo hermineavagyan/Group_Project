@@ -3,7 +3,7 @@ const {authenticate} = require("../config/jwt.config")
 const {authenticateRole} = require("../config/jwt.config")
 
 module.exports = (app)=>{
-    app.get("/api/allUsers", authenticateRole(['U']), UserController.findAllUsers);
+    app.get("/api/allUsers", authenticate, authenticateRole(['U']), UserController.findAllUsers);
     //app.get("/api/allUsers",UserController.findAllUsers);
     app.get("/api/allUsers", UserController.findAllUsers);
     app.post("/api/users/register", UserController.register);
