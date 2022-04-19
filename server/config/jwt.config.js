@@ -15,47 +15,47 @@ const authenticate = (req, res, next) => { //this authenticate function works as
             }
         }
     )
-}
-
-module.exports = {
-    authenticate,
-}
-
-    // authenticateRole : (roleArray) => (req, res, next) => {
+    }
+    const authenticateRole = (roleArray) => (req, res, next) => {
         
-    //     try {
-    //         // const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-    //         const decoded = jwt.verify(req.cookies.usertoken, process.env.JWT_SECRET);//token? or usertoken?
-    //     req.user = {
-    //         name: decoded.name,
-    //         user_type: decoded.user_type
-    //     };
-    //         if(!req.user) {
-    //             return res.status(401).json({
-    //                 success: false,
-    //                 message: 'Session expired',
-    //                 code: 'SESSION_EXPIRED'
-    //             });
-    //             }
-    //             const authorized = false;
-    //             //if user has a role that is required to access any API
-    //             roleArray.forEach(role => {//rolesArray? or roleArray?
-    //             authorized = req.user.user_type === role;
-    //             })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
+        try {
+            // const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(req.cookies.usertoken, process.env.JWT_SECRET);//token? or usertoken?
+        req.user = {
+            name: decoded.name,
+            user_type: decoded.user_type
+        };
+            if(!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Session expired',
+                    code: 'SESSION_EXPIRED'
+                });
+                }
+                let authorized = false;
+                //if user has a role that is required to access any API
+                roleArray.forEach(role => {//rolesArray? or roleArray?
+                    console.log(req.user)
+                authorized = req.user.user_type === role;
+                })
+                if(authorized) {
+                    return next();
+                  }
+                  return res.status(401).json({
+                    success: false,
+                    message: 'Unauthorized',
+                  })
+        } catch (error) {
+            console.log(error)
+        }
+
        
        
-    //     if(authorized) {
-    //       return next();
-    //     }
-    //     return res.status(401).json({
-    //       success: false,
-    //       message: 'Unauthorized',
-    //     })
-    //   }
-    //}
+    }
+      module.exports = {
+        authenticate,
+        authenticateRole,
+    }
    
 
 

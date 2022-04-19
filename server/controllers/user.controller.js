@@ -8,8 +8,9 @@ module.exports = {
 
             try {
                 const user = new User(req.body)
-                const newUser = await user.save({role: 'User',user_type: 'U'})
-                const admin = await user.save({role: 'Admin',user_type: 'A'})
+                // const newUser = await user.save({name: 'User',user_type: 'U'})
+                const newUser = await user.save()
+                //const admin = await user.save({name: 'Admin',user_type: 'A'})
                     console.log(newUser);
                     console.log("Successfully Registered!")
                     res.json(newUser)
@@ -68,28 +69,15 @@ module.exports = {
             });
         },
 
-        // getLoggedInUser: async (req, res)=>{
-        //     try{
-        //         const user = await  User.findOne({_id: req.jwtpayload.id})
-        //         console.log(user);
-        //         res.json(user)
-        //     }catch(err){
-        //         console.log(err);
-        //     }},
-        getLoggedInUser:(req, res) => {
-            // const decodedJWT = jwt.decode(req.cookies.usertoken,{
-            //     complete: true
-            // })
-        
-            User.findOne({_id: req.jwtpayload.id}) //see also jwt.config.js for the jwtpayload
-                .then((user)=>{
-                    console.log(user);
-                    res.json(user)
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
-            },
+        getLoggedInUser: async (req, res)=>{
+            try{
+                const user = await  User.findOne({_id: req.jwtpayload.id})
+                console.log(user);
+                res.json(user)
+            }catch(err){
+                console.log(err);
+            }},
+       
             findAllUsers: async (req, res) => {
                 try{
                     const allUsers = await  User.find()
@@ -99,5 +87,16 @@ module.exports = {
                         console.log("Find All Users failed");
                         res.json({ message: "Something went wrong in findAll", error: err })
                     }
-            }
+            },
+            deleteOneUser: (req, res)=>{
+                User.deleteOne({_id: req.params.id})
+                    .then((deletedUser)=>{
+                        console.log(deletedUser);
+                        res.json(deletedUser);
+                    })
+                    .catch((err)=>{
+                        console.log("deleteOneUser() failed");
+                        res.json({ message: "Something went wrong in deleteOneUser()", error: err })
+                    })
+            },
 }
