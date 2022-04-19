@@ -9,7 +9,7 @@ const ItemSchema = new mongoose.Schema({
     },
 
     price: {
-        type: String,
+        type: Number,
         required: [true, 'You must provide the price of the item']
     },
 
