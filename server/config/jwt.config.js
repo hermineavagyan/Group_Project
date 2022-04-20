@@ -17,14 +17,14 @@ const authenticate = (req, res, next) => { //this authenticate function works as
     )
     }
     const authenticateRole = (roleArray) => (req, res, next) => {
-       
+    
         
         try {
             console.log("This is the req body " + req.body)
             // const decoded = await jwt.verify(token, process.env.JWT_SECRET);
             const decoded = jwt.verify(req.cookies.usertoken, process.env.JWT_SECRET);//token? or usertoken?
         req.user = {
-           
+        
             name: decoded.name,
             user_type: decoded.user_type
         };
@@ -44,11 +44,11 @@ const authenticate = (req, res, next) => { //this authenticate function works as
                 })
                 if(authorized) {
                     return next();
-                  }
-                  return res.status(401).json({
+                }
+                return res.status(401).json({
                     success: false,
                     message: 'Unauthorized',
-                  })
+                })
         } catch (error) {
             console.log(error)
         }
