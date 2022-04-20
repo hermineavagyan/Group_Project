@@ -1,9 +1,10 @@
-<<<<<<< HEAD
 require('dotenv').config({ path: './.env' });
 const express = require('express');
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 const { resolve } = require('path');
+const port = process.env.MY_PORT
 
 // Ensure environment variables are set.
 checkEnv();
@@ -26,8 +27,12 @@ express.json({
     },
     })
 );
+app.use(cookieParser())
 
 require('./middlewares/stripe.middleware')(app);
+require('./config/mongoose.config')
+require('./routes/item.routes')(app)
+require('./routes/user.routes')(app)
 
 function checkEnv() {
     const price = process.env.PRICE;
@@ -37,33 +42,4 @@ function checkEnv() {
     }
 }
 
-app.listen(4242, () => console.log(`Node server listening on port ${4242}!`));
-
-=======
-require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
-const cookieParser = require("cookie-parser");
-const app = express()
-
-
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cors({
-    origin: "http://localhost:3000",
-    credentials: true
-}))
-app.use(cookieParser())
-
-
-require('./config/mongoose.config')
-require('./routes/item.routes')(app)
-require('./routes/user.routes')(app)
-
-
-
-
-const port = process.env.MY_PORT
-
 const server = app.listen(port, ()=>console.log(`Listening on port: ${port}`))
->>>>>>> main
