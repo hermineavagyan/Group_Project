@@ -6,7 +6,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2020-08-27',
 });
 
-
 // IMPORTANT HERE, use this.
 const calculateOrderAmount = (items) => {
     // Replace this constant with a calculation of the order's amount
@@ -16,74 +15,101 @@ const calculateOrderAmount = (items) => {
 };
 
 module.exports = (app) => {
+    app.post("/create-customer", async (req,res)=>{
+        const createCustomer = async () => {
+            const customerDetails = await req.body; //assign req.body to a variable.
+            try {
+                // console.log(customerDetails.email);
+                // console.log(customerDetails.name);
+                const customer = await stripe.customers.create({
+                    // description: 'My First Test Customer (created for API docs)',
+                    email: customerDetails.email,
+                    name: customerDetails.name,
+                    phone: customerDetails.phone,
+                    address: {
+                        city: customerDetails.address.city,
+                        country: customerDetails.address.country,
+                        line1: customerDetails.address.line1,
+                        line2: customerDetails.address.line2,
+                        postal_code: customerDetails.address.postal_code,
+                        state: customerDetails.address.state,
+                    }
+                });
+                return customer.id
+                // res.send(customer.id);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const createCus = await createCustomer();
+        res.send(createCus);
+    })
     
-    app.post("/create-payment-intent", async (req, res) => {
-        const { items, customer } = req.body;
-        // Create a PaymentIntent with the order amount and currency
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: calculateOrderAmount(items),
-            currency: "usd",
-                automatic_payment_methods: {
-                enabled: true,
-                },
-            customer,
-            confirm: true,
-        });
-        res.send({
-        clientSecret: paymentIntent.client_secret,
-        });
-    });
+    // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create
+    //     const { items, customer } = req.body;
+    //     // Create a PaymentIntent with the order amount and currency
+    //     const paymentIntent = await stripe.paymentIntents.create({
+    //         amount: calculateOrderAmount(items),
+    //         currency: "usd",
+    //             automatic_payment_methods: {
+    //             enabled: true,
+    //             },
+    //         customer,
+    //         confirm: true,
+    //     });
+    //     res.send({
+    //     clientSecret: paymentIntent.client_secret,
+    //     });
+    // });
 
     // for testing below.
-    app.post('/test-payment-intent', async (req, res) => {
-        const paymentIntent = async () => {
-            try {
-                await stripe.paymentIntents.create({
-                customer: 'cus_LX4BVmdaPGRZaz', //{{CUSTOMER_ID}}
-                currency: 'usd',
-                amount: 2000,
-                payment_method_types: ['card'],
-                setup_future_usage: 'on_session',
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        const makePaymentIntent = await paymentIntent();
-        res.send(makePaymentIntent);
-    })
+    // app.post('/test-payment-intent', async (req, res) => {
+    //     const paymentIntent = async () => {
+    //         try {
+    //             await stripe.paymentIntents.create({
+    //             customer: 'cus_LX4BVmdaPGRZaz', //{{CUSTOMER_ID}}
+    //             currency: 'usd',
+    //             amount: 2000,
+    //             payment_method_types: ['card'],
+    //             setup_future_usage: 'on_session',
+    //             });
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     const makePaymentIntent = await paymentIntent();
+    //     res.send(makePaymentIntent);
+    // })
 
     // for testing below.
-    app.post('/create-checkout-session', async (req, res) => {
-        const checkoutSesson = async () => {
-            try {
-                const YOUR_DOMAIN = 'localhost';
-                await stripe.checkout.sessions.create({
-                    line_items: [
-                        {
-                        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        price: 'price_1Kpm8I4F6Om3sJ1tXj3FRfLc',// {{PRICE_ID}}
-                        quantity: 1,
-                        payment_method_types: ['card'],
-                        payment_method: 'card_1Kq05Y4F6Om3sJ1tro1J2DMs',
-                        // charge: xxx,
-                        },
-                    ],
-                    mode: 'payment',
-                    success_url: `${YOUR_DOMAIN}/success.html`,
-                    cancel_url: `${YOUR_DOMAIN}/cancel.html`,
-                });
-            res.redirect(303, session.url);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        const makeCheckoutSession = await checkoutSesson();
-        res.send(makeCheckoutSession);
-    })
-}
-
-
+//     app.post('/create-checkout-session', async (req, res) => {
+//         const checkoutSesson = async () => {
+//             try {
+//                 const YOUR_DOMAIN = 'localhost';
+//                 await stripe.checkout.sessions.create({
+//                     line_items: [
+//                         {
+//                         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+//                         price: 'price_1Kpm8I4F6Om3sJ1tXj3FRfLc',// {{PRICE_ID}}
+//                         quantity: 1,
+//                         payment_method_types: ['card'],
+//                         payment_method: 'card_1Kq05Y4F6Om3sJ1tro1J2DMs',
+//                         // charge: xxx,
+//                         },
+//                     ],
+//                     mode: 'payment',
+//                     success_url: `${YOUR_DOMAIN}/success.html`,
+//                     cancel_url: `${YOUR_DOMAIN}/cancel.html`,
+//                 });
+//             res.redirect(303, session.url);
+//             } catch (error) {
+//                 console.log(error);
+//             }
+//         }
+//         const makeCheckoutSession = await checkoutSesson();
+//         res.send(makeCheckoutSession);
+//     })
+// }
 
 // app.get('/', (req, res) => {
 //     const path = resolve(process.env.STATIC_DIR + '/checkout.html');
@@ -159,8 +185,11 @@ app.post('/webhook', async (req, res) => {
     // );
     //
     // const lineItems = session.line_items;
+    }
 }
 
-res.sendStatus(200);
-});
 
+// res.sendStatus(200);
+// });
+)
+}
