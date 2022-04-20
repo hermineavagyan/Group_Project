@@ -6,12 +6,13 @@ import AudiotrackIcon from '@material-ui/icons/Audiotrack'
 
 const Registration = () => {
 
-    const [confirmReg, setConfirmReg] = useState('')
+
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
 
     const [user, setUser] = useState({
-        username: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -21,6 +22,7 @@ const Registration = () => {
         padding: '20px',
         height: '60vh',
         maxHeight: '500px',
+        minHeight: '420px',
         width: '280px',
         margin: '20px auto'
     }
@@ -56,9 +58,6 @@ const Registration = () => {
                 password: '',
                 confirmPassword: ''
             })
-            setConfirmReg(
-                "Thank you for Registering, you can now log in!",
-            )
             navigate("/")
         })
         .catch((err)=>{
@@ -69,7 +68,7 @@ const Registration = () => {
 
     return (
         <Grid>
-        <Typography variant='h2' align='center'>MyMusician</Typography>
+        <Typography variant='h2' align='center' style={{margin: '50px 0'}}>MyMusician</Typography>
             <Paper elevation={10} style={paperStyle}>
                 <form onSubmit={register}>
                 <Grid align='center'>
@@ -77,9 +76,9 @@ const Registration = () => {
                 <h2>Registration</h2>
                 </Grid>
                     <div className='inputContainer'>
-                    {errors.firstName ? (
+                    {/* {errors.firstName ? (
                         <span>{errors.username.message}</span>
-                    ) : null}
+                    ) : null} */}
                         <TextField
                         label='First Name'
                         placeholder='Enter First Name'
@@ -90,7 +89,7 @@ const Registration = () => {
                         onChange={handleChange}
                         />
                     {errors.lastName ? (
-                        <span>{errors.username.message}</span>
+                        <span>{errors.firstName.message}</span>
                     ) : null}
                         <TextField
                         label='Last Name'
@@ -101,8 +100,8 @@ const Registration = () => {
                         value={user.lastName}
                         onChange={handleChange}
                         />
-                        {errors.email ? (
-                        <span>{errors.email.message}</span>
+                        {errors.lastName ? (
+                        <span>{errors.lastName.message}</span>
                     ) : null}
                         <TextField 
                         label='Email'
@@ -113,8 +112,8 @@ const Registration = () => {
                         value={user.email}
                         onChange={handleChange}
                         />
-                        {errors.password ? (
-                        <span>{errors.password.message}</span>
+                        {errors.email ? (
+                        <span>{errors.email.message}</span>
                     ) : null}
                         <TextField
                         label='Password'
@@ -125,8 +124,8 @@ const Registration = () => {
                         value={user.password}
                         onChange={handleChange}
                         />
-                        {errors.confirmPassword ? (
-                        <span>{errors.confirmPassword.message}</span>
+                        {errors.password ? (
+                        <span>{errors.password.message}</span>
                     ) : null}
                         <TextField 
                         label='Confirm Password'
@@ -137,8 +136,11 @@ const Registration = () => {
                         value={user.confirmPassword}
                         onChange={handleChange} 
                         />
+                        {errors.confirmPassword ? (
+                        <span>{errors.confirmPassword.message}</span>
+                    ) : null}
                     </div>
-                        <Button color='primary' fullWidth variant='contained' style={btnStyle}>Register</Button>
+                        <Button type='submit' color='primary' fullWidth variant='contained' style={btnStyle}>Register</Button>
                 </form>
             </Paper>
         </Grid>
