@@ -8,6 +8,7 @@ import AudiotrackIcon from '@material-ui/icons/Audiotrack'
 
 const Login = (props) => {
 
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
@@ -32,35 +33,37 @@ const Login = (props) => {
     const login = async (e) => {
         try {
             e.preventDefault()
-            const res = axios.post("http://localhost:8000/api/users/login",
+            const res = await axios.post("http://localhost:8000/api/users/login",
                 {
                     email,
                     password
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 },
             )
             console.log(res.data)
             navigate('/home')
-        } catch (err) {
-            console.log(err)
-            setErrorMessage(err.response.data.message)
+        } catch (error) {
+            console.log(error)
+            setErrorMessage(error.response.data.message)
         }
     }
 
 
     return (
+
+
+
         <Grid>
-            <Typography variant='h2' align='center'>MyMusician</Typography>
+            <Typography variant='h2' align='center' style={{margin: '50px 0'}}>MyMusician</Typography>
                 <Paper elevation={10} style={paperStyle}>
+                <p>{errorMessage ? errorMessage : ''}</p>
                     <form onSubmit={login}>
                     <Grid align='center'>
                         <Avatar style={avatarStyle}><AudiotrackIcon/></Avatar>
                         <h2 className='title'>Login</h2>
                     </Grid>
-                    <span>{errorMessage ? errorMessage : ''}</span>
-                        
                         <TextField 
                         label='Email'
                         placeholder='Enter Email'
@@ -79,7 +82,7 @@ const Login = (props) => {
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
                         />
-                        <Button color='primary' fullWidth variant='contained' style={btnStyle}>Sign In</Button>
+                        <Button type='submit' color='primary' fullWidth variant='contained' style={btnStyle}>Sign In</Button>
                         <Typography align='center'>
                             <Link to={"/registration"}>Create An Account</Link>
                         </Typography>
