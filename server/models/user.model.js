@@ -3,11 +3,12 @@ const bcrypt = require ("bcrypt");
 
 const UserSchema = new mongoose.Schema({
     user_type: {
-        type: String
-        
+        type: String,
+        default: 'U'
     },
     name:{
-        type:String
+        type:String,
+        default: 'User'
     },
     firstName: {
         type: String,
