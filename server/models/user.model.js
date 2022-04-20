@@ -25,7 +25,36 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Password is required']
+    },
+    phoneNumber: {
+        type: String,
+        required: [true, 'Phone number is required']
+    },
+    address: {
+        city: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        street: {
+            type: String,
+        },
+        postalCode: {
+            type: String,
+        },
+        
+    },
+
+    customerId: {
+        type: String,
+        // required: [true, "There is a problem, reach out to customer support ErrorCode: 222"]
     }
+
+
 },{timestamps:true})
 
 UserSchema.virtual("confirmPassword")
