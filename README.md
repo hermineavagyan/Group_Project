@@ -3,7 +3,11 @@
 ## Dependencies
 
 ### Client
-
+* react-router-dom
+* axios
+* material-ui/core
+* material-ui/icons
+* mui/material
 
 ### Server
 
@@ -13,3 +17,6 @@
 * dotenv
 * express
 * stripe
+* bcrypt
+* jsonwebtoken
+* mongoose
