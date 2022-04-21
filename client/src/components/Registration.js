@@ -1,14 +1,32 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Avatar, Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
+import { Avatar, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from '@material-ui/core'
 import AudiotrackIcon from '@material-ui/icons/Audiotrack'
+import { State }  from 'country-state-city';
 
 const Registration = () => {
-
+    
+    const [selectedState, setSelectedState] = useState("")
     const [userId, setUserId] = useState('')
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
+
+    const usArray = State.getStatesOfCountry('US')
+    let states = [];
+    for (let i = 0; i < usArray.length; i++){
+        states.push(usArray[i].isoCode);
+    }
+    // console.log(states);
+    const statesList = Object.keys(states).map(key => ({
+        isoCode: key
+    }));
+
+    const handleStateSelect = (e)=> {
+        console.log("Selected state", e.target.value);
+        const statesSel = e.target.value;
+        setSelectedState(statesSel);
+    }
 
     const [user, setUser] = useState({
         firstName: '',
@@ -61,11 +79,11 @@ const Registration = () => {
             phone: user.phoneNumber,
             address: {
                 city: user.city,
-                country: user.country,
+                country: "US",
                 line1: user.street,
                 line2: '',
                 postal_code: user.postalCode,
-                state: user.state,
+                state: selectedState,
             }
         },  {withCredentails: true})
         console.log(stripeCustomer.data)
@@ -84,8 +102,8 @@ const Registration = () => {
                 phoneNumber: user.phoneNumber,
                 address: {
                     city: user.city,
-                    country: user.country,
-                    state: user.state,
+                    country: "US",
+                    state: selectedState,
                     street: user.street,
                     postalCode: user.postalCode
                 },
@@ -186,12 +204,13 @@ const Registration = () => {
                             <Typography variant='subtitle1' align='center' style={{marginTop: '6px'}}>Address</Typography>
                             <TextField
                             label='Country'
-                            placeholder='Enter Country'
+                            placeholder='Enter a country'
+                            defaultValue = 'US'
                             fullWidth
                             type="text"
                             name='country'
-                            value={user.country}
-                            onChange={handleChange}
+                            disabled = {true}
+                            // onChange={handleChange}
                             />
                             <TextField
                             label='City'
@@ -211,15 +230,22 @@ const Registration = () => {
                             value={user.street}
                             onChange={handleChange}
                             />
-                            <TextField
-                            label='State'
-                            placeholder='Enter State'
-                            fullWidth
-                            type="text"
-                            name='state'
-                            value={user.state}
-                            onChange={handleChange}
-                            />
+                            
+                            {/* <InputLabel id="demo-simple-select-label">State</InputLabel> */}
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={selectedState}
+                                label="State"
+                                onChange={e => handleStateSelect(e)}>
+                                <MenuItem value="">Select the state</MenuItem>
+                                {states.map((state, key) => (
+                                <MenuItem key={key} value={state}>
+                                    {state}
+                                </MenuItem>
+                                ))}
+                            </Select>
+
                             <TextField
                             label='Postal Code'
                             placeholder='Enter Postal Code'
