@@ -58,13 +58,14 @@ const Registration = () => {
             lastName: user.lastName,
             email: user.email,
             password: user.password,
-            phoneNumber: user.phoneNumber,
+            phone: user.phoneNumber,
             address: {
                 city: user.city,
                 country: user.country,
+                line1: user.street,
+                line2: '',
+                postal_code: user.postalCode,
                 state: user.state,
-                street: user.street,
-                postalCode: user.postalCode
             }
         },  {withCredentails: true})
         console.log(stripeCustomer.data)
