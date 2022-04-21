@@ -24,7 +24,7 @@ module.exports = (app) => {
                 const customer = await stripe.customers.create({
                     // description: 'My First Test Customer (created for API docs)',
                     email: customerDetails.email,
-                    name: customerDetails.name,
+                    name: customerDetails.firstName + " " + customerDetails.lastName,
                     phone: customerDetails.phone,
                     address: {
                         city: customerDetails.address.city,
@@ -35,6 +35,7 @@ module.exports = (app) => {
                         state: customerDetails.address.state,
                     }
                 });
+                console.log(customerDetails.firstName + " " + customerDetails.lastName)
                 return customer.id
                 // res.send(customer.id);
             } catch (error) {

@@ -52,31 +52,12 @@ const Registration = () => {
         try {
         e.preventDefault()
         console.log("sdasas")
-        // const stripeCustomer = await axios.post('http://localhost:8000/create-customer',
-        // {
-        //     firstName: user.firstName,
-        //     lastName: user.lastName,
-        //     email: user.email,
-        //     password: user.password,
-        //     phoneNumber: user.phoneNumber,
-        //     address: {
-        //         city: user.city,
-        //         country: user.country,
-        //         state: user.state,
-        //         street: user.street,
-        //         postalCode: user.postalCode
-        //     }
-        // },  {withCredentails: true})
-        // setUserId(stripeCustomer.res.data)
-        // console.log(userId)
-        
-        const dataBase = await axios.post('http://localhost:8000/api/users/register',
+        const stripeCustomer = await axios.post('http://localhost:8000/create-customer',
         {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             password: user.password,
-            confirmPassword: user.confirmPassword,
             phoneNumber: user.phoneNumber,
             address: {
                 city: user.city,
@@ -85,10 +66,35 @@ const Registration = () => {
                 street: user.street,
                 postalCode: user.postalCode
             }
-        },  
+        },  {withCredentails: true})
+        console.log(stripeCustomer.data)
+        setUserId(stripeCustomer.data)
+        // console.log(userId)
         
-        {withCredentails: true})
-            console.log(dataBase.data)
+        if(userId !== null){
+            console.log(stripeCustomer.data)
+            const dataBase = await axios.post('http://localhost:8000/api/users/register',
+            {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                password: user.password,
+                confirmPassword: user.confirmPassword,
+                phoneNumber: user.phoneNumber,
+                address: {
+                    city: user.city,
+                    country: user.country,
+                    state: user.state,
+                    street: user.street,
+                    postalCode: user.postalCode
+                },
+                customerId: stripeCustomer.data
+            },  
+            
+            {withCredentails: true})
+                console.log(dataBase.data)
+        }
+        
         
             navigate("/")
 
