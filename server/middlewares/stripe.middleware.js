@@ -46,7 +46,7 @@ module.exports = (app) => {
         res.send(createCus);
     })
 
-    app.get(`/get-products`, async (req, res)=>{
+    app.get(`/products/all`, async (req, res)=>{
         const getProducts = async () => {
             try {
                 const products = await stripe.products.list({
@@ -61,6 +61,25 @@ module.exports = (app) => {
         const productPayload = await getProducts();
         res.send(productPayload);
     })
+
+    app.get(`/products/one/:id`, async (req, res)=>{
+        const oneProduct = await req.params;
+        const getOneProduct = async () => {
+            try {
+                const product = await stripe.products.retrieve(
+                    oneProduct.id,
+                );
+                return product;
+                // console.log(product);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const productPayload = await getOneProduct();
+        res.send(productPayload);
+    })
+
+
     
     // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create
     //     const { items, customer } = req.body;
