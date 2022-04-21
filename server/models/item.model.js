@@ -9,7 +9,7 @@ const ItemSchema = new mongoose.Schema({
     },
 
     price: {
-        type: Number,
+        type: String,
         required: [true, 'You must provide the price of the item']
     },
 
@@ -24,7 +24,7 @@ const ItemSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Please provide a description of the item'],
-        maxlength: [280, 'Cannot exceed 280 characters']
+        maxlength: [1000, 'Cannot exceed 1000 characters']
     },
 
     image: {
