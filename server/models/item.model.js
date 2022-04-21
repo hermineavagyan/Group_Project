@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const ItemSchema = new mongoose.Schema({
 
-    item: {
+    name: {
         type: String,
         required: [true, 'A item name is required']
     },

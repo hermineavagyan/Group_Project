@@ -14,8 +14,6 @@ function App() {
           <Route element={<Login />} path='/' />
           <Route element={<Registration />} path='/registration' />
           <Route element={<Home />} path='/home' />
-          <Route element={<DisplayOne />} path='/item/:id' />
-
         </Routes>
       
       </div>
