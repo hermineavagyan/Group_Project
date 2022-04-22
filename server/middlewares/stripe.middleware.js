@@ -45,7 +45,58 @@ module.exports = (app) => {
         const createCus = await createCustomer();
         res.send(createCus);
     })
-    
+
+    app.get(`/products/all`, async (req, res)=>{
+        const getProducts = async () => {
+            try {
+                const products = await stripe.products.list({
+                    limit: 10,
+                });
+                return products.data;
+                // console.log(products.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const productPayload = await getProducts();
+        res.send(productPayload);
+    })
+
+    app.get(`/products/one/:id`, async (req, res)=>{
+        const oneProduct = await req.params;
+        const getOneProduct = async () => {
+            try {
+                const product = await stripe.products.retrieve(
+                    oneProduct.id,
+                );
+                return product;
+                // console.log(product);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const productPayload = await getOneProduct();
+        res.send(productPayload);
+    })
+
+    app.get(`/prices/one/:productId`, async (req, res)=>{
+        const prodId = await req.params;
+        const getProductPrices = async () => {
+            try {
+                const prices = await stripe.prices.list({
+                    limit: 10,
+                    product: prodId.productId,
+                });
+                // console.log(prices);
+                return prices;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const pricesPayload = await getProductPrices();
+        res.send(pricesPayload);
+    })
+
     // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create
     //     const { items, customer } = req.body;
     //     // Create a PaymentIntent with the order amount and currency

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css';
+import DisplayOne from './components/DisplayOne';
 import Login from './components/Login';
 import Registration from './components/Registration';
 import Home from './views/Home';
@@ -13,6 +14,7 @@ function App() {
           <Route element={<Login />} path='/' />
           <Route element={<Registration />} path='/registration' />
           <Route element={<Home />} path='/home' />
+          <Route element={<DisplayOne />} path='/products/:id' />
         </Routes>
       
       </div>

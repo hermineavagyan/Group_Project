@@ -17,10 +17,6 @@ const Registration = () => {
     for (let i = 0; i < usArray.length; i++){
         states.push(usArray[i].isoCode);
     }
-    // console.log(states);
-    const statesList = Object.keys(states).map(key => ({
-        isoCode: key
-    }));
 
     const handleStateSelect = (e)=> {
         console.log("Selected state", e.target.value);
