@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import { Paper, Container, CardMedia, Button, Box,  Typography } from '@material-ui/core'
+import { Paper, Container, CardMedia, Button, Box,  Typography, Grid } from '@material-ui/core'
+import NavBar from './NavBar'
 
 
 const DisplayOne = () => {
@@ -33,37 +34,41 @@ const DisplayOne = () => {
 
 
     const paperStyle = {
-        padding: '90px 40px',
+        padding: '80px',
         height: '50vh',
-        width: '80%',
+        width: '30%',
         display: 'flex',
-        minHeight: '700px',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'space-evenly',
+        minHeight: '800px',
+        minWidth: '400px',
         margin: '20px auto',
         
     }
 
 
     return (
-        <Container style={{padding: '80px 0'}}>
-            <Paper elevation={10} style={paperStyle}>
-                <Box style={{display: 'flex', flexDirection: 'column',minWidth: "400px"}}>
-                        <h2>
+        <>
+            <NavBar/> 
+            <Grid style={{padding: '80px 0'}} xs='auto' >
+                <Paper elevation={10} style={paperStyle}>
+                    
+                        <Typography variant='h5' style={{marginBottom: '60px'}}>
                         {product.name}
-                        </h2>
-                    <CardMedia 
-                    style={{}}
-                    component='img'
-                    image={product.images}
-                    />  
-                </Box>
-                <Box style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-                    <Typography>$ {productPrice.toLocaleString()}</Typography>
-                    <Typography>{product.description}</Typography>
-                    <Button style={{width:'160px'}} variant="contained">Add to Cart</Button>
-                </Box>
-            </Paper>
-        </Container>
-        
+                        </Typography>
+                        <img 
+                        style={{width:'50%', minWidth: '250px', margin: '10px auto'}}
+                        src={product.images}
+                        alt='product'
+                        />  
+                        <Typography style={{fontWeight:"bold", fontSize:'18px'}}>$ {productPrice.toLocaleString()}</Typography>
+                        <Typography>{product.description}</Typography>
+                        <Button style={{width:'160px'}} variant="contained">Add to Cart</Button>
+                    
+                </Paper>
+            </Grid>
+        </>
     )
 }
 
