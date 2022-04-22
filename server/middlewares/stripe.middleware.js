@@ -79,8 +79,24 @@ module.exports = (app) => {
         res.send(productPayload);
     })
 
+    app.get(`/prices/all/:productId`, async (req, res)=>{
+        const prodId = await req.params;
+        const getProductPrices = async () => {
+            try {
+                const prices = await stripe.prices.list({
+                    limit: 10,
+                    product: prodId.productId,
+                });
+                // console.log(prices);
+                return prices;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const pricesPayload = await getProductPrices();
+        res.send(pricesPayload);
+    })
 
-    
     // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create
     //     const { items, customer } = req.body;
     //     // Create a PaymentIntent with the order amount and currency
