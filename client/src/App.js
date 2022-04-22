@@ -14,6 +14,7 @@ function App() {
           <Route element={<Login />} path='/' />
           <Route element={<Registration />} path='/registration' />
           <Route element={<Home />} path='/home' />
+          <Route element={<DisplayOne />} path='/products/:id' />
         </Routes>
       
       </div>
