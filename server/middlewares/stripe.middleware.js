@@ -79,7 +79,7 @@ module.exports = (app) => {
         res.send(productPayload);
     })
 
-    app.get(`/prices/all/:productId`, async (req, res)=>{
+    app.get(`/prices/one/:productId`, async (req, res)=>{
         const prodId = await req.params;
         const getProductPrices = async () => {
             try {
