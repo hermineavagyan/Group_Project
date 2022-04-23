@@ -13,7 +13,6 @@ const Home = () => {
     const [user, setUser] = useState({});
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
-    const [someState, setSomeState] = useState('')
     const navigate = useNavigate();
     
     useEffect(()=> {
