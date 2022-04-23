@@ -1,11 +1,13 @@
-import { AppBar, Container, Toolbar, Typography, Box, Button, IconButton } from '@material-ui/core'
+import { AppBar, Container, Toolbar, Typography, Box, Button, IconButton, TextField } from '@material-ui/core'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React from 'react'
 
-const NavBar = () => {
+const NavBar = (props) => {
+
+    const {setSearchTerm} = props
 
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -49,7 +51,7 @@ const NavBar = () => {
 
     return (
         <AppBar position='static'>
-            <Container maxWidth style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '', height: "100px"}}>
+            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '', height: "100px"}}>
                 <Toolbar disableGutters>
                     <Typography
                     variant='h4'
@@ -60,13 +62,16 @@ const NavBar = () => {
                 </Toolbar>
 
                 <Box >
+
+              
                     <Search>
-                        <SearchIconWrapper>
+                        <SearchIconWrapper >
                             <SearchIcon />
                         </SearchIconWrapper>
                     <StyledInputBase
                         placeholder="Search…"
                         inputProps={{ 'aria-label': 'search' }}
+                        
                     />
                     </Search>
                     </Box>
