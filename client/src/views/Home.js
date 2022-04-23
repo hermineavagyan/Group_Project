@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Button, Card, Box, CardHeader, CardContent} from '@material-ui/core';
+import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import NavBar from "../components/NavBar";
 
 const Home = () => {
 
@@ -13,6 +15,7 @@ const Home = () => {
     const [user, setUser] = useState({});
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('')
     const navigate = useNavigate();
     
     useEffect(()=> {
@@ -61,26 +64,52 @@ const Home = () => {
         return targetProduct[0]?.price;
         // return targetProduct.length === 1 ? targetProduct[0].price: '';
     }
+    
+
+    const cardStyle = {
+        width: '15%',
+        minWidth: '260px',
+        padding: '20px',
+        margin: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly'
+    }
+
+    const imageStyle = {
+        width: '100%',
+        objectFit: 'contain',
+        marginTop: '10px'
+    }
 
     return (
         <div>
+            <NavBar setSearchTerm={setSearchTerm}/>
+        <div style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
             {productList.map((product, index) => (
-                <Card sx={{ maxWidth: 345 }} elevation={10} key={index}>
+                <Card sx={{ maxWidth: 345 }} elevation={10} key={index} style={cardStyle}>
+                    <Link style={{textDecoration: 'none', color: 'black', fontWeight:'500'}} to={`/product/${product.id}`}>
+                    {product.name}
                     <CardMedia
                         component="img"
                         alt="green iguana"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
+                        height="260px"
+                        image={product.images}
+                        style={imageStyle}
                     />
-                    <Link to={`/product/${product._id}`}>{product.name}</Link>
-                    <CardContent>
-                        <p>{product.description}</p>
-                        <div>{priceSearch(product.id, productPrice)}</div>                  
+                    </Link>
+                    <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
+                        <IconButton color="primary" aria-label="add to shopping cart">
+                            <AddShoppingCartIcon />
+                        </IconButton>                
                     </CardContent>
                 </Card>
             ))
             }  
         </div>
+        </div>
+        
     )
 }
 
