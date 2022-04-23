@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import {Button, Card, Box, CardHeader, CardContent, Grid, Grow} from '@material-ui/core'
 import NavBar from "../components/NavBar";
 import { textAlign } from "@mui/system";
@@ -11,35 +10,16 @@ const Home = () => {
 
     const [itemList, setItemList] = useState([]);
     const [products, setProducts] = useState({})
-<<<<<<< HEAD
-=======
-=======
->>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
-import {Button, Card, Box, CardHeader, CardContent} from '@material-ui/core';
-import CardMedia from '@mui/material/CardMedia';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-
-const Home = () => {
-
-    const [productList, setProductList] = useState([]);
-    const [priceList, setPriceList] = useState([]);
-<<<<<<< HEAD
-=======
->>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
->>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
     const [user, setUser] = useState({});
-    const [price, setPrice] = useState("");
-    const [productPrice, setProductPrice] = useState([]);
+
     const navigate = useNavigate();
-<<<<<<< HEAD
 
     var cardStyle = {
         
         display: 'block',
         width: '30vw',
         transitionDuration: '0.3s',
-        height: '40vw',
+        height: '30vw',
         marginTop: '20px',
         marginLeft:'18px'
     }
@@ -76,49 +56,47 @@ const Home = () => {
     catch(err)
         {console.log(err)}
     }
-=======
->>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
     
-    useEffect(()=> {
-        const allProducts = async () => {
-            try {
-                const res = await axios.get('http://localhost:8000/products/all');
-                setProductList(res.data);
-                const priceResponse = await axios.get('http://localhost:8000/prices/all');
-                setPriceList(priceResponse);
-                let arr = []
-                    for (let i = 0; i < priceResponse.data.data.length; i++){
-                        let product_Price = {};
-                        const str = priceResponse.data.data[i].unit_amount_decimal
-                        var resStr = str.substring(0,str.length-2)+"."+str.substring(str.length-2);
-                        product_Price.id = priceResponse.data.data[i].product;
-                        product_Price.price = resStr;
-                        arr.push(product_Price);
-                        // setProductPrice([...productPrice, product_Price]);
-                    }
-                    setProductPrice(arr)
+    // const deleteCity = (idFromBelow)=>{
+    //     axios.delete(`http://localhost:8000/api/items/${idFromBelow}`)
+    //         .then((res)=>{
+    //             console.log(res);
+    //             console.log(res.data);
+    //             setItemList(itemList.filter(item => item._id !== idFromBelow))
+    //         })
+    //         .catch((err)=>console.log(err))
+    // }
+    useEffect(() => {
+        const getALlUsers = async(e)=>{
+            try{
+                const res = await axios.get("http://localhost:8000/api/users",
+                { withCredentials: true }
+            )
+                console.log(res.data);
+                setUser(res.data);
                 }
-                catch (err) {
-                console.log(err);
-            }
+            catch(err)
+            {console.log(err)};
         }
-        allProducts()
+        getALlUsers();
     }, [])
 
     const logout = async (e) => {
         try{
-            const res = await axios.post("http://localhost:8000/api/users/logout",
-                    {}, 
-                    {withCredentials: true,},)
-                    // console.log(res);
-                    // console.log(res.data);
-                    navigate("/");
-            } 
-            catch(err) {
-                console.log(err);
-            };
+        const res = await axios.post("http://localhost:8000/api/users/logout",
+                {}, 
+                {
+                    withCredentials: true,
+                },
+            )
+                console.log(res);
+                console.log(res.data);
+                navigate("/");
+        } 
+                catch(err) {
+                    console.log(err);
+                };
     };
-<<<<<<< HEAD
 
     // const Item = (({theme})=>({
     //     textAlign: 'center'
@@ -149,7 +127,7 @@ const Home = () => {
                         <p>{item.description}</p>
                         <p>{item.price}</p>
                         <img 
-                        style={{width:'50%', minWidth: '168px', margin: '-3px auto', display: 'block'}}
+                        style={{width:'50%', minWidth: '168px', margin: '10px auto', display: 'block'}}
                         src={item.images}
                         alt='product'
                         />
@@ -166,37 +144,7 @@ const Home = () => {
                             ))}
                             </Grid>
                             </Box>
-=======
 
-    const priceSearch = (mapProductId, products) => { 
-        const targetProduct = products.filter(product => product.id === mapProductId)
-        // console.log(targetProduct[0].price)
-        return targetProduct[0]?.price;
-        // return targetProduct.length === 1 ? targetProduct[0].price: '';
-    }
-<<<<<<< HEAD
-=======
->>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
->>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
-
-    return (
-        <div>
-            {productList.map((product, index) => (
-                <Card sx={{ maxWidth: 345 }} elevation={10} key={index}>
-                    <CardMedia
-                        component="img"
-                        alt="green iguana"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <Link to={`/product/${product._id}`}>{product.name}</Link>
-                    <CardContent>
-                        <p>{product.description}</p>
-                        <div>{priceSearch(product.id, productPrice)}</div>                  
-                    </CardContent>
-                </Card>
-            ))
-            }  
         </div>
     )
 }
