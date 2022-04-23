@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Button, Card, Box, CardHeader, CardContent} from '@material-ui/core';
-import CardMedia from '@mui/material/CardMedia';
-import Container from '@mui/material/Container';
+import {Card,CardContent,Container, Grid} from '@material-ui/core';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import FormHelperText from '@mui/material/FormHelperText';
+
+
 
 const Home = () => {
 
+    const grey = "#9E9E9E"
     const [productList, setProductList] = useState([]);
     const [priceList, setPriceList] = useState([]);
     const [user, setUser] = useState({})
@@ -64,26 +68,44 @@ const Home = () => {
         return targetProduct[0]?.price;
         // return targetProduct.length === 1 ? targetProduct[0].price: '';
     }
+    var cardStyle = {
+        display: 'block',
+        width: '30vw',
+        transitionDuration: '0.3s',
+        height: '40vw',
+        marginTop: '20px',
+        marginLeft: '18px'
+    }
 
     return (
-        <div>
+    
+        <Grid container spacing={2}>
+        
             {productList.map((product, index) => (
-                <Card sx={{ maxWidth: 345 }} elevation={10} key={index}>
-                    <CardMedia
-                        component="img"
-                        alt="green iguana"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <Link to={`/product/${product._id}`}>{product.name}</Link>
+                <Card elevation = {3} style = {cardStyle} sx = {{maxHeight:275}} key={index}>
+                    <h6 style = {{margin: '20px'}}><Link to={`/product/${product._id}`}>{product.name}</Link></h6> 
+                
                     <CardContent>
-                        <p>{product.description}</p>
-                        <div>{priceSearch(product.id, productPrice)}</div>                  
+                        <img style = {{height: '50%', maxHeight: '60%', width: '70%', boxShadow: `5px 3px 5px ${grey} `, border: '2px solid black'}} src = {product.images} alt = '{product.name}'/>
+                        <div style = {{textAlign: "center", marginTop: "30px"}}>
+                            <Typography variant="body2" color="text.secondary">
+                                {product.description}
+                            </Typography>
+                        </div >
+
+                            <FormHelperText>
+                                Price: {priceSearch(product.id, productPrice)}
+                            </FormHelperText>
                     </CardContent>
+
+                    <CardActions>
+                    <Button size="small">Add to Cart</Button>
+                    </CardActions>
+
                 </Card>
             ))
             }  
-        </div>
+        </Grid>
     )
 }
 
