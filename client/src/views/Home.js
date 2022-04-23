@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import {Button, Card, Box, CardHeader, CardContent, Grid, Grow} from '@material-ui/core'
 import NavBar from "../components/NavBar";
 import { textAlign } from "@mui/system";
@@ -10,6 +11,10 @@ const Home = () => {
 
     const [itemList, setItemList] = useState([]);
     const [products, setProducts] = useState({})
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
 import {Button, Card, Box, CardHeader, CardContent} from '@material-ui/core';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
@@ -19,10 +24,15 @@ const Home = () => {
 
     const [productList, setProductList] = useState([]);
     const [priceList, setPriceList] = useState([]);
+<<<<<<< HEAD
+=======
+>>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
+>>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
     const [user, setUser] = useState({});
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
     const navigate = useNavigate();
+<<<<<<< HEAD
 
     var cardStyle = {
         
@@ -66,6 +76,8 @@ const Home = () => {
     catch(err)
         {console.log(err)}
     }
+=======
+>>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
     
     useEffect(()=> {
         const allProducts = async () => {
@@ -106,6 +118,7 @@ const Home = () => {
                 console.log(err);
             };
     };
+<<<<<<< HEAD
 
     // const Item = (({theme})=>({
     //     textAlign: 'center'
@@ -153,6 +166,7 @@ const Home = () => {
                             ))}
                             </Grid>
                             </Box>
+=======
 
     const priceSearch = (mapProductId, products) => { 
         const targetProduct = products.filter(product => product.id === mapProductId)
@@ -160,6 +174,10 @@ const Home = () => {
         return targetProduct[0]?.price;
         // return targetProduct.length === 1 ? targetProduct[0].price: '';
     }
+<<<<<<< HEAD
+=======
+>>>>>>> 8a64f4c71f77392e40e07811f5d4b66188c9ac20
+>>>>>>> df6361d056c1794acbfba6b63c9d041969f67099
 
     return (
         <div>
