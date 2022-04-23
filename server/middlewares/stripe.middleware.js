@@ -15,7 +15,7 @@ const calculateOrderAmount = (items) => {
 };
 
 module.exports = (app) => {
-    app.post("/create-customer", async (req,res)=>{
+    app.post("/create-customer", async (req,res)=>{ //create new customer via registration
         const createCustomer = async () => {
             const customerDetails = await req.body; //assign req.body to a variable.
             try {
@@ -46,7 +46,7 @@ module.exports = (app) => {
         res.send(createCus);
     })
 
-    app.get(`/products/all`, async (req, res)=>{
+    app.get(`/products/all`, async (req, res)=>{ //get all products.
         const getProducts = async () => {
             try {
                 const products = await stripe.products.list({
@@ -62,7 +62,7 @@ module.exports = (app) => {
         res.send(productPayload);
     })
 
-    app.get(`/products/one/:id`, async (req, res)=>{
+    app.get(`/products/one/:id`, async (req, res)=>{ // get one product by id.
         const oneProduct = await req.params;
         const getOneProduct = async () => {
             try {
@@ -79,7 +79,7 @@ module.exports = (app) => {
         res.send(productPayload);
     })
 
-    app.get(`/prices/one/:productId`, async (req, res)=>{
+    app.get(`/prices/one/:productId`, async (req, res)=>{ // get one price by product id.
         const prodId = await req.params;
         const getProductPrices = async () => {
             try {
@@ -95,6 +95,42 @@ module.exports = (app) => {
         }
         const pricesPayload = await getProductPrices();
         res.send(pricesPayload);
+    })
+
+    app.get(`/prices/all`, async (req, res)=>{ // get all prices.
+        // const allPrices = await req.params;
+        const getAllPrices = async () => {
+            try {
+                const prices = await stripe.prices.list({
+                    limit: 15,
+                });
+                // console.log(prices);
+                return prices;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const allPricesPayload = await getAllPrices();
+        res.send(allPricesPayload);
+    })
+
+    app.get(`/charges/one/:customerId`, async (req, res)=>{ // get all charges for a specific customer.
+        const cusId = await req.params;
+        console.log(cusId);
+        const getOneCharge = async () => {
+            try {
+                const charges = await stripe.charges.list({
+                    limit: 3,
+                    customer: cusId.customerId,
+                });
+                // console.log(charges);
+                return charges;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const chargePayload = await getOneCharge();
+        res.send(chargePayload);
     })
 
     // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create

@@ -42,12 +42,12 @@ const Registration = () => {
         padding: '40px',
         height: '50vh',
         minHeight: '840px',
-        width: '280px',
+        width: '300px',
         margin: '20px auto'
     }
 
     const btnStyle = {
-        margin:'20px 0',
+        margin:'40px 0',
         backgroundColor: '#c80a6b'
     }
 
@@ -197,7 +197,7 @@ const Registration = () => {
                         error={!!errors?.confirmPassword}
                         helperText={errors.confirmPassword? errors.confirmPassword.message : null}
                         />
-                            <Typography variant='subtitle1' align='center' style={{marginTop: '6px'}}>Address</Typography>
+                            <Typography variant='subtitle1' align='center' style={{marginTop: '20px'}}>Address</Typography>
                             <TextField
                             label='Country'
                             placeholder='Enter a country'

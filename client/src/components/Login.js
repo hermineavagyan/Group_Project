@@ -18,7 +18,7 @@ const Login = (props) => {
         padding: '20px',
         height: '50vh',
         maxHeight: '440px',
-        width: '280px',
+        width: '300px',
         margin: '20px auto'
     }
 
