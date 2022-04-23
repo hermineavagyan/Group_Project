@@ -10,7 +10,9 @@ const Home = () => {
 
     const [productList, setProductList] = useState([]);
     const [priceList, setPriceList] = useState([]);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({})
+    
+
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
     const navigate = useNavigate();
@@ -37,6 +39,7 @@ const Home = () => {
                 catch (err) {
                 console.log(err);
             }
+
         }
         allProducts()
     }, [])
