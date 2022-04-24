@@ -133,151 +133,74 @@ module.exports = (app) => {
         res.send(chargePayload);
     })
 
-    // app.post("/create-payment-intent", async (req, res) => { // ref: https://stripe.com/docs/api/payment_intents/create
-    //     const { items, customer } = req.body;
-    //     // Create a PaymentIntent with the order amount and currency
-    //     const paymentIntent = await stripe.paymentIntents.create({
-    //         amount: calculateOrderAmount(items),
-    //         currency: "usd",
-    //             automatic_payment_methods: {
-    //             enabled: true,
-    //             },
-    //         customer,
-    //         confirm: true,
-    //     });
-    //     res.send({
-    //     clientSecret: paymentIntent.client_secret,
-    //     });
-    // });
+    app.post('/create-payment-intent', async (req, res) => { //sending an empty object to here from client, returns the client secret.
+        const { paymentMethodType, currency, customerId } = req.body;
+        try {
+            const paymentIntent = await stripe.paymentIntents.create({
+            amount: 20555,
+            currency: currency,
+            payment_method_types: [paymentMethodType],
+            customer: 'cus_LYbWl5VyBOXf4b',
+            // customer: customerId, //when we are ready to pass the customerId to Stripe to charge the correct account.
+            // currency: currency, //in case we wanted to pass the currency via destructure above
+            // payment_method_types: [paymentMethodType], //in case we wanted to pass the currency via destructure above
+        });
+            res.json({ clientSecret: paymentIntent.client_secret });
+        } catch(error) {
+            res.status(400).json({ error: {message: error.message }});
+        }
+    });
 
-    // for testing below.
-    // app.post('/test-payment-intent', async (req, res) => {
-    //     const paymentIntent = async () => {
-    //         try {
-    //             await stripe.paymentIntents.create({
-    //             customer: 'cus_LX4BVmdaPGRZaz', //{{CUSTOMER_ID}}
-    //             currency: 'usd',
-    //             amount: 2000,
-    //             payment_method_types: ['card'],
-    //             setup_future_usage: 'on_session',
-    //             });
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    //     const makePaymentIntent = await paymentIntent();
-    //     res.send(makePaymentIntent);
-    // })
+    app.get('/config', async (req, res) => { // a way for any client, web or mobile to pick up the publishable key, so that it doesn't have to be hard coded in the app and can be maintained centrally (add jwtoken authentication to this route too?)
+        res.json({publishableKey: process.env.STRIPE_PUBLISHABLE_KEY})
+    });
 
-    // for testing below.
-//     app.post('/create-checkout-session', async (req, res) => {
-//         const checkoutSesson = async () => {
-//             try {
-//                 const YOUR_DOMAIN = 'localhost';
-//                 await stripe.checkout.sessions.create({
-//                     line_items: [
-//                         {
-//                         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-//                         price: 'price_1Kpm8I4F6Om3sJ1tXj3FRfLc',// {{PRICE_ID}}
-//                         quantity: 1,
-//                         payment_method_types: ['card'],
-//                         payment_method: 'card_1Kq05Y4F6Om3sJ1tro1J2DMs',
-//                         // charge: xxx,
-//                         },
-//                     ],
-//                     mode: 'payment',
-//                     success_url: `${YOUR_DOMAIN}/success.html`,
-//                     cancel_url: `${YOUR_DOMAIN}/cancel.html`,
-//                 });
-//             res.redirect(303, session.url);
-//             } catch (error) {
-//                 console.log(error);
-//             }
-//         }
-//         const makeCheckoutSession = await checkoutSesson();
-//         res.send(makeCheckoutSession);
-//     })
-// }
+    app.get("/", (req, res) => { // I don't even really know why this is necessary. Gotta look into this.
+        const path = resolve(process.env.STATIC_DIR + "/index.html");
+        res.sendFile(path);
+    });
 
-// app.get('/', (req, res) => {
-//     const path = resolve(process.env.STATIC_DIR + '/checkout.html');
-//     res.sendFile(path);
-// });
+      // Stripe requires the raw body to construct the event
+      // app.post("/webhook", bodyParser.raw({ type: "application/json" }), (req, res) => {
+    app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => { // The webhook stuff handles asynchronous statuses for each payment, increases security, assurance, etc that payments are actually fulfilled properly.
+        const sig = req.headers['stripe-signature'];
+        let event;
+        try {
+            event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+        } catch (err) {
+            // On error, log and return the error message
+            console.log(`❌ Error message: ${err.message}`);
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
+        
+        // Successfully constructed event
+        console.log('✅ Success:', event.id);
+        
+        if(event.type === 'payment_intent.created'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-// // Fetch the Checkout Session to display the JSON result on the success page
-// app.get('/checkout-session', async (req, res) => {
-//     const { sessionId } = req.query;
-//     const session = await stripe.checkout.sessions.retrieve(sessionId);
-//     res.send(session);
-// });
+        if(event.type === 'payment_intent.canceled'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-// app.post('/create-checkout-session', async (req, res) => {
-//     const domainURL = process.env.DOMAIN;
+        if(event.type === 'payment_intent.payment_failed'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-//   // Create new Checkout Session for the order
-//   // Other optional params include:
-//   // For full details see https://stripe.com/docs/api/checkout/sessions/create
-//     const session = await stripe.checkout.sessions.create({
-//     mode: 'payment',
-//     line_items: [{
-//     price: process.env.PRICE,
-//     payment_method: 'card_1Kq05Y4F6Om3sJ1tro1J2DMs',
-//     quantity: 1,
-//     }],
-//     // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
-//     success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-//     cancel_url: `${domainURL}/canceled.html`,
-//     // automatic_tax: { enabled: true }
-// });
+        if(event.type === 'payment_intent.processing'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-// return res.redirect(303, session.url);
-// });
+        if(event.type === 'payment_intent.requires_action'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-// Webhook handler for asynchronous events.
-app.post('/webhook', async (req, res) => {
-    let event;
+        if(event.type === 'payment_intent.succeeded'){
+            console.log(`[${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        }
 
-  // Check if webhook signing is configured.
-    if (process.env.STRIPE_WEBHOOK_SECRET) {
-    // Retrieve the event by verifying the signature using the raw body and secret.
-    let signature = req.headers['stripe-signature'];
-
-    try {
-        event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET
-    );
-    } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed.`);
-    return res.sendStatus(400);
-    }
-    } else {
-    // Webhook signing is recommended, but if the secret is not configured in `.env`,
-    // retrieve the event data directly from the request body.
-    event = req.body;
-}
-
-    if (event.type === 'checkout.session.completed') {
-    console.log(`🔔  Payment received!`);
-
-    // Note: If you need access to the line items, for instance to
-    // automate fullfillment based on the the ID of the Price, you'll
-    // need to refetch the Checkout Session here, and expand the line items:
-    //
-    // const session = await stripe.checkout.sessions.retrieve(
-    //   'cs_test_KdjLtDPfAjT1gq374DMZ3rHmZ9OoSlGRhyz8yTypH76KpN4JXkQpD2G0',
-    //   {
-    //     expand: ['line_items'],
-    //   }
-    // );
-    //
-    // const lineItems = session.line_items;
-    }
-}
-
-
-// res.sendStatus(200);
-// });
-)
+        // Return a response to acknowledge receipt of the event
+        res.json({received: true});
+    });
 }

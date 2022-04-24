@@ -1,9 +1,13 @@
 require('dotenv').config({ path: './.env' });
 const express = require('express');
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const app = express();
+const cors = require("cors");
 const { resolve } = require('path');
+// const bodyParser = require("body-parser");
+const e = require("express"); // do we even use this variable? otherwise to be removed.
+const cookieParser = require("cookie-parser");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const port = process.env.MY_PORT
 
 // Ensure environment variables are set.
@@ -16,17 +20,14 @@ app.use(cors({
 
 app.use(express.static(process.env.STATIC_DIR));
 app.use(express.urlencoded({extended:true}));
-app.use(
-express.json({
-    // We need the raw body to verify webhook signatures.
-    // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function (req, res, buf) {
-        if (req.originalUrl.startsWith('/webhook')) {
-            req.rawBody = buf.toString();
-        }
-    },
-    })
-);
+app.use((req, res, next) => {
+    if (req.originalUrl === '/webhook') {
+        next();
+    } else {
+        express.json()(req, res, next);
+    }
+});
+
 app.use(cookieParser())
 
 require('./middlewares/stripe.middleware')(app);

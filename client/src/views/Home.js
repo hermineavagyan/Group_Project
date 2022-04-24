@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Card,CardContent,Container, Grid} from '@material-ui/core';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import FormHelperText from '@mui/material/FormHelperText';
-
-
+import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
+import CardMedia from '@mui/material/CardMedia';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import NavBar from "../components/NavBar";
 
 const Home = () => {
 
@@ -19,6 +18,7 @@ const Home = () => {
 
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('')
     const navigate = useNavigate();
     
     useEffect(()=> {
@@ -68,34 +68,45 @@ const Home = () => {
         return targetProduct[0]?.price;
         // return targetProduct.length === 1 ? targetProduct[0].price: '';
     }
-    var cardStyle = {
-        display: 'block',
-        width: '30vw',
-        transitionDuration: '0.3s',
-        height: '40vw',
-        marginTop: '20px',
-        marginLeft: '18px'
+    
+
+    const cardStyle = {
+        width: '15%',
+        minWidth: '260px',
+        padding: '20px',
+        margin: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly'
+    }
+
+    const imageStyle = {
+        width: '100%',
+        objectFit: 'contain',
+        marginTop: '10px'
     }
 
     return (
-    
-        <Grid container spacing={2}>
-        
+        <div>
+            <NavBar setSearchTerm={setSearchTerm}/>
+        <div style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
             {productList.map((product, index) => (
-                <Card elevation = {3} style = {cardStyle} sx = {{maxHeight:275}} key={index}>
-                    <h6 style = {{margin: '20px'}}><Link to={`/product/${product._id}`}>{product.name}</Link></h6> 
-                
-                    <CardContent>
-                        <img style = {{height: '50%', maxHeight: '60%', width: '70%', boxShadow: `5px 3px 5px ${grey} `, border: '2px solid black'}} src = {product.name} alt = '{product.name}'/>
-                        <div style = {{textAlign: "center", marginTop: "30px"}}>
-                            <Typography variant="body2" color="text.secondary">
-                                {product.description}
-                            </Typography>
-                        </div >
-
-                            <FormHelperText>
-                                Price: {priceSearch(product.id, productPrice)}
-                            </FormHelperText>
+                <Card sx={{ maxWidth: 345 }} elevation={10} key={index} style={cardStyle}>
+                    <Link style={{textDecoration: 'none', color: 'black', fontWeight:'500'}} to={`/product/${product.id}`}>
+                    {product.name}
+                    <CardMedia
+                        component="img"
+                        alt="green iguana"
+                        height="260px"
+                        image={product.images}
+                        style={imageStyle}
+                    />
+                    </Link>
+                    <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
+                        <IconButton color="primary" aria-label="add to shopping cart">
+                            <AddShoppingCartIcon />
+                        </IconButton>                
                     </CardContent>
 
                     <CardActions>
@@ -105,7 +116,9 @@ const Home = () => {
                 </Card>
             ))
             }  
-        </Grid>
+        </div>
+        </div>
+        
     )
 }
 
