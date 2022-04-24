@@ -15,13 +15,8 @@ function App() {
           <Route element={<Login />} path='/' />
           <Route element={<Registration />} path='/registration' />
           <Route element={<Home />} path='/home' />
-<<<<<<< HEAD
-          <Route element={<DisplayOne />} path='/products/:id' />
-          <Route element={<Profile/>} path='/users/:id' />
-=======
           <Route element={<CheckoutForm />} path="/checkout" />
           <Route element={<DisplayOne />} path='/product/:id' />
->>>>>>> main
         </Routes>
       </div>
     </BrowserRouter>
