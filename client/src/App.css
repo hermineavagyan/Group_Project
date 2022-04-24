@@ -1,9 +1,7 @@
 .App {
   /* text-align: center; */
   margin: 0 auto;
-  display: flex;
-  width: 1080px;
-  height: 800px;
+  /* display: flex; */
   justify-content: center;
 }
 
@@ -18,10 +16,19 @@
   color: white;
 }
 
+.checkout-main {
+  display: flex;
+  margin-top: 30px;
+  width: 1280px;
+  height: 100%;
+  text-align: center;
+}
+
 #payment-form {
   width: 300px;
   margin: 0 auto;
   margin-top: 30px;
+  float: left;
 }
 
 #pay-button {
@@ -40,9 +47,34 @@
   cursor: pointer;
 }
 
+.two-thirds {
+  width: 75.66%;
+}
+
+.one-third {
+  width: 20%;
+  margin: 0 auto;
+  text-align: left;
+  padding: 20px;
+  padding-bottom: 33px;
+  border: 1px solid #bdbbbb;
+  border-radius: 10px;
+  position: fixed;
+  margin-left: 40px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.pad {
+  padding-left: 15px;
+  padding-bottom: 8px
+}
+
+.img-size {
+  width: 15%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
