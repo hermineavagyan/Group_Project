@@ -10,9 +10,12 @@ import NavBar from "../components/NavBar";
 
 const Home = () => {
 
+    const grey = "#9E9E9E"
     const [productList, setProductList] = useState([]);
     const [priceList, setPriceList] = useState([]);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({})
+    
+
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
     const [searchTerm, setSearchTerm] = useState('')
@@ -40,6 +43,7 @@ const Home = () => {
                 catch (err) {
                 console.log(err);
             }
+
         }
         allProducts()
     }, [])
@@ -104,6 +108,11 @@ const Home = () => {
                             <AddShoppingCartIcon />
                         </IconButton>                
                     </CardContent>
+
+                    <CardActions>
+                    <Button size="small">Add to Cart</Button>
+                    </CardActions>
+
                 </Card>
             ))
             }  
