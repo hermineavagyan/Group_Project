@@ -1,5 +1,6 @@
 import React from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import NavBar from './NavBar';
 // import axios from 'axios';
 
 /* We will pass all "cart" items as props to the CheckoutForm for submission. 
@@ -71,12 +72,86 @@ const CheckoutForm = (props) => {
 
     return(
         <div>
-            <h1>Card</h1>
-            <form id="payment-form" onSubmit={handleSubmit}>
-                {/* <label id="card-label" htmlFor="card-element">Card</label> */}
-                    <CardElement id="card-element" />
-                <button id="pay-button">Pay</button>
-            </form>
+            <NavBar />
+            <div className="checkout-main">
+                <div className="two-thirds">
+                    <div>
+                        <div id="user-information-container">
+                            <p>Full Name</p>
+                            <p>Email Address</p>
+                            <p>Billing Address</p>
+                            <p>Phone Number</p>
+                            <p>Customer ID</p>
+                        </div>
+                        <div id="order-list-via-props">
+                            <table class="customTable">
+                                <thead>
+                                    <tr>
+                                    <th>Image</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
+                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+                                        <td>$849.99</td>
+                                    </tr>
+                                    <tr>
+                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
+                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+                                        <td>$849.99</td>
+                                    </tr>
+                                    <tr>
+                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
+                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+                                        <td>$849.99</td>
+                                    </tr>
+                                    <tr>
+                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
+                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+                                        <td>$849.99</td>
+                                    </tr>
+                                    <tr>
+                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
+                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+                                        <td>$849.99</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="one-third">
+                        <h3>Order Summary</h3>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td id="item-count-price">Items '(3)':</td>
+                                        <td className="pad">$83.24</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="shipping-and-handling">Shipping and handling:</td>
+                                        <td className="pad">$83.24</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="order-total">Order total:</td>
+                                        <td className="pad">$90.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form id="payment-form" onSubmit={handleSubmit}>
+                            {/* <label id="card-label" htmlFor="card-element">Card</label> */}
+                                <CardElement id="card-element" />
+                            <button id="pay-button">Pay</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
