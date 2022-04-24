@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
-
 const Profile = () => {
 
     //const {id} = useParams();
@@ -47,7 +46,7 @@ const Profile = () => {
     //     customerIdGetter();
     // }, [])
     
-    console.log(stripeUserId);
+    // console.log(stripeUserId);
     return (
         <div>
             Customer id: {user.customerId}

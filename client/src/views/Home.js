@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
+import {Button, Card, Box, CardContent, IconButton, CardActions} from '@material-ui/core';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography'
@@ -108,11 +108,9 @@ const Home = () => {
                             <AddShoppingCartIcon />
                         </IconButton>                
                     </CardContent>
-
                     <CardActions>
-                    <Button size="small">Add to Cart</Button>
+                        <Button size="small">Add to Cart</Button>
                     </CardActions>
-
                 </Card>
             ))
             }  
