@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import NavBar from "../components/NavBar";
+import Paper from '@mui/material/Paper';
+import { FormHelperText } from '@mui/material';
 
 const Profile = () => {
 
-    //const {id} = useParams();
+    const divStyle = {
+        margin: "20px",
+        display: "flex", 
+        justifyContent: "flexStart", 
+        alignItems: "flexEnd", 
+        borderRadius: "1%", 
+        width: "600px", 
+        height: "15%",
+        border: "2px solid black"
+    }
+
     const [user, setUser] = useState({});
-    // const [stripeUserId, setStripeUserId] = useState("");
     const[userAddress, setUserAddress] = useState({});
 
     useEffect(()=> {
@@ -23,9 +34,6 @@ const Profile = () => {
                     console.log(res.data.address)
                     console.log(userAddress)
                     
-                    // setStripeUserId(res.data.customerId)
-                    // console.log(res.data.customerId)
-                    // console.log(setStripeUserId)
             } catch (err) {
                 console.log(err)
             }
@@ -33,43 +41,37 @@ const Profile = () => {
         userGetter()
     }, [])
 
-    // useEffect(()=>{
-    //     const customerIdGetter = async () => {
-    //         try {
-    //             const res = await axios.get("http://localhost:8000/api/users", 
-    //                     {withCredentials: true})
-    //                     setStripeUserId(res.data.customerId)
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    //     customerIdGetter();
-    // }, [])
-    
-    // console.log(stripeUserId);
     return (
         <div>
-            Customer id: {user.customerId}
-            <br/>
-            last name: {user.lastName}
-            <br/>
-            city: {userAddress.city}
+        <NavBar setSearchTerm=""/>
 
-            
-            
-               {/* for (let i = 0; i < userAddress.length; i++){
-                   console.log(userAddress[i])
-               }
-            
-               {
-                   Object.values(userAddress).map((entry, index) =>{return(
-                    <div key = {index}>
-                    <p> {entry.city}</p>
-                           
-                            <p>{entry.country}</p>
-                    </div>
-                )} )
-            } */}
+        <h2>Manage your profile</h2>
+        <Paper style = {divStyle} elevation = {3}>
+            <h4 style = {{marginLeft: "5%"}}>Name</h4>
+            <p>{user.firstName} {user.lastName}</p>
+            <FormHelperText>
+            <p>Account Holder Customer id: {user.customerId}</p>
+            </FormHelperText>
+        </Paper>
+        
+        <div style = {divStyle}>
+            <h4 style = {{marginLeft: "5%"}}>Contact Details</h4>
+            <div style = {{margin: "20px"}}>
+            <p>Email: {user.email}</p>
+            <p>Phone: {user.phoneNumber}</p>
+            </div>
+        </div>
+
+        <div style = {divStyle}>
+            <h4 style = {{marginLeft: "5%"}}>Address</h4>
+            <div style = {{margin: "20px"}}>
+            <p>{userAddress.street} {userAddress.city}</p>
+            <p>{userAddress.state} {userAddress.postalCode}</p>
+            </div>
+        </div>
+        <h2>
+            Order history
+        </h2>
         </div>
     )
 }

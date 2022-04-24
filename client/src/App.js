@@ -17,6 +17,7 @@ function App() {
           <Route element={<Home />} path='/home' />
           <Route element={<CheckoutForm />} path="/checkout" />
           <Route element={<DisplayOne />} path='/product/:id' />
+          <Route element={<Profile />} path='/users/:id' />
         </Routes>
       </div>
     </BrowserRouter>
