@@ -185,7 +185,7 @@ const Home = () => {
 
     const cardStyle = {
         width: '15%',
-        minWidth: '260px',
+        minWidth: '265px',
         padding: '20px',
         margin: '20px',
         display: 'flex',
