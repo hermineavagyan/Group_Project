@@ -86,7 +86,7 @@ const Home = () => {
                     <h6 style = {{margin: '20px'}}><Link to={`/product/${product._id}`}>{product.name}</Link></h6> 
                 
                     <CardContent>
-                        <img style = {{height: '50%', maxHeight: '60%', width: '70%', boxShadow: `5px 3px 5px ${grey} `, border: '2px solid black'}} src = {product.images} alt = '{product.name}'/>
+                        <img style = {{height: '50%', maxHeight: '60%', width: '70%', boxShadow: `5px 3px 5px ${grey} `, border: '2px solid black'}} src = {product.name} alt = '{product.name}'/>
                         <div style = {{textAlign: "center", marginTop: "30px"}}>
                             <Typography variant="body2" color="text.secondary">
                                 {product.description}
