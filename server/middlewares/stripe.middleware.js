@@ -6,13 +6,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2020-08-27',
 });
 
-// IMPORTANT HERE, use this.
-const calculateOrderAmount = (items) => {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
-    return 1400;
-};
+
 
 module.exports = (app) => {
     app.post("/create-customer", async (req,res)=>{ //create new customer via registration
@@ -133,11 +127,20 @@ module.exports = (app) => {
         res.send(chargePayload);
     })
 
+    // IMPORTANT HERE, use this.
+    const calculateOrderAmount = (items) => {
+        // Replace this constant with a calculation of the order's amount
+        // Calculate the order total on the server to prevent
+        // people from directly manipulating the amount on the client
+        return 1400;
+    };
+
     app.post('/create-payment-intent', async (req, res) => { //sending an empty object to here from client, returns the client secret.
-        const { paymentMethodType, currency, customerId } = req.body;
+        const { paymentMethodType, currency, customerId, amount } = req.body; // the items to destructure from the request body.
         try {
             const paymentIntent = await stripe.paymentIntents.create({
-            amount: 20555,
+            // amount: 20555,
+            amount: amount,
             currency: currency,
             payment_method_types: [paymentMethodType],
             customer: 'cus_LYbWl5VyBOXf4b',

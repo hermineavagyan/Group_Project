@@ -11,11 +11,17 @@ An idea about what the checkout form will include, will be:
 */
 
 const CheckoutForm = (props) => {
+    
+    // const { orderTotal,}
+
     const elements = useElements();
     const stripe = useStripe();
+    
+    const testCurrency = 'usd';
+    const orderTotal = 35000;
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // I believe we will remove this when we go live and redirect to an 'order success' page.
         try {
             if(!stripe || !elements){
                 return;
@@ -29,7 +35,9 @@ const CheckoutForm = (props) => {
                 },
                 body: JSON.stringify({
                     paymentMethodType: 'card',
-                    currency: 'usd',
+                    // currency: 'usd',
+                    currency: testCurrency,
+                    amount: orderTotal,
                 }),
             }).then(r => r.json());
 
