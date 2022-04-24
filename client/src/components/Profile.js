@@ -19,6 +19,7 @@ const Profile = () => {
 
     const [user, setUser] = useState({});
     const[userAddress, setUserAddress] = useState({});
+    const[chargesInfo, setChargesInfo] = useState({});
 
     useEffect(()=> {
         const userGetter = async () => {
@@ -33,14 +34,31 @@ const Profile = () => {
                     setUserAddress(res.data.address)
                     console.log(res.data.address)
                     console.log(userAddress)
-                    
+
             } catch (err) {
                 console.log(err)
             }
         }
         userGetter()
     }, [])
+    
+    useEffect(()=>{
+        const chargesGetter = async ()=>{
+            try {
+                const charges = await axios.get(`http://localhost:8000/charges/one/${user.customerId}`,
+                    {withCredentials: true})        
+                console.log(charges.data);
+                setChargesInfo(charges.data)
+                console.log(chargesInfo);
 
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+        chargesGetter()
+        
+    },[])
     return (
         <div>
         <NavBar setSearchTerm=""/>
