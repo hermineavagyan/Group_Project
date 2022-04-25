@@ -93,9 +93,27 @@ const Home = () => {
                     // console.log(context.cartCount)
                 await axios.put(`http://localhost:8000/api/users/${user._id}`,
                 {
-                    cartCount: context.cartCount
-                }, 
+                    cartCount: context.cartCount,
+                },
                 { withCredentials: true })
+                // const clickedItemIndex = 
+                const cartList = await axios.post(`http://localhost:8000/api/addtocart`,
+                {
+                    "cartList": [
+                        { 
+                        "productName": `${productList[1].name}`,
+                        "productImage": `${productList[1].images}`,
+                        // "productPrice": `${productList[0].price}`
+                        "productPrice": `${priceSearch(productList[1].id, productPrice)}`
+                        },
+                    ] 
+                },
+                    {
+                        user: res.data.name
+                    },
+                { withCredentials: true })
+                
+                console.log(productList[0].name)
             } catch (error) {
                 console.log(error)
             } 

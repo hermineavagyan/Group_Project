@@ -34,6 +34,7 @@ require('./middlewares/stripe.middleware')(app);
 require('./config/mongoose.config')
 require('./routes/item.routes')(app)
 require('./routes/user.routes')(app)
+require('./routes/cart.routes')(app)
 
 function checkEnv() {
     const price = process.env.PRICE;
