@@ -1,86 +1,63 @@
+import React, { useEffect, useState, useContext } from 'react'
 import { AppBar, Container, Toolbar, Typography, Box, Button, IconButton, TextField } from '@material-ui/core'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import axios from 'axios'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import React from 'react'
+import Link from '@mui/material/Link';
+import MyContext from './MyContext';
 
 const NavBar = (props) => {
 
-    const {setSearchTerm} = props
+    const context = useContext(MyContext);
+    const {setSearchTerm, user } = props
 
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-        }));
-
-        const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        }));
-
-        const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-          // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-            width: '20ch',
-            },
-        },
-        }));
+    useEffect(()=>{
+        const getUser = async () => {
+            try {
+                const res = await axios.get(`http://localhost:8000/api/users`,
+                {withCredentials: true})
+                context.setCartCount(res.data.cartCount);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUser()
+    },[])
 
     return (
-        <AppBar position='static'>
-            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '', height: "100px"}}>
+        <AppBar position='static' style={{marginBottom: '20px'}}>
+            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: 'E0AF3A', height: "100px"}}>
                 <Toolbar disableGutters>
                     <Typography
                     variant='h4'
                     noWrap
                     component='div'
-                    
-                    >MyMusican</Typography>
+                    >MyMusician</Typography>
                 </Toolbar>
-
-                <Box >
-
-              
-                    <Search>
-                        <SearchIconWrapper >
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                        
+                <form>
+                    <TextField 
+                    label='Search'
+                    name='search'
+                    variant='outlined'
+                    size='small'
+                    sx={{
+                        color: 'white'
+                    }}
+                    onChange={(e)=>{setSearchTerm(e.target.value)}}
                     />
-                    </Search>
-                    </Box>
-                    <Box>
-                        <IconButton style={{color: 'white'}}>{<ShoppingCartIcon/>}</IconButton>
+                </form>
+                    <Box style={{display: 'flex'}}>
+                        <Box style={{display: 'flex', alignItems:'center'}}>
+                            <Link href={'#'} underline='none' color='inherit'>Profile</Link>
+                            <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
+                                {/* <p style={{fontSize: '16px'}}>{user?.cartCount}</p> */}
+                                <p style={{fontSize: '16px'}}>{context.cartCount}</p>
+                            </IconButton>
+                        </Box>
                         <Button style={{color: 'white'}}>Log Out</Button>
                     </Box>
             </Container>
-
         </AppBar>
     )
 }
