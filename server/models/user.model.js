@@ -49,6 +49,11 @@ const UserSchema = new mongoose.Schema({
         
     },
 
+    cartCount: {
+        type: Number,
+        default: 0
+    },
+    
     customerId: {
         type: String,
         // required: [true, "There is a problem, reach out to customer support ErrorCode: 222"]

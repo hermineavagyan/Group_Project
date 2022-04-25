@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import {Button, Card, Box, CardHeader, CardContent, Grid, Grow} from '@material-ui/core'
 import NavBar from "../components/NavBar";
 import { textAlign } from "@mui/system";
 
+=======
+import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
+import CardMedia from '@mui/material/CardMedia';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import NavBar from "../components/NavBar";
+>>>>>>> origin/main
 
 const Home = () => {
 
     const [itemList, setItemList] = useState([]);
     const [products, setProducts] = useState({})
     const [user, setUser] = useState({});
+<<<<<<< HEAD
 
+=======
+    const [price, setPrice] = useState("");
+    const [productPrice, setProductPrice] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('')
+>>>>>>> origin/main
     const navigate = useNavigate();
 
     var cardStyle = {
@@ -81,6 +96,7 @@ const Home = () => {
         getALlUsers();
     }, [])
 
+<<<<<<< HEAD
     const logout = async (e) => {
         try{
         const res = await axios.post("http://localhost:8000/api/users/logout",
@@ -101,10 +117,87 @@ const Home = () => {
     // const Item = (({theme})=>({
     //     textAlign: 'center'
     // }))
+=======
+    // const logout = async (e) => {
+    //     try{
+    //         const res = await axios.post("http://localhost:8000/api/users/logout",
+    //                 {}, 
+    //                 {withCredentials: true,},)
+    //                 // console.log(res);
+    //                 // console.log(res.data);
+    //                 navigate("/");
+    //         } 
+    //         catch(err) {
+    //             console.log(err);
+    //         };
+    // };
+
+    const priceSearch = (mapProductId, products) => { 
+        const targetProduct = products.filter(product => product.id === mapProductId)
+        // console.log(targetProduct[0].price)
+        return targetProduct[0]?.price;
+        // return targetProduct.length === 1 ? targetProduct[0].price: '';
+    }
+    
+
+    useEffect(()=>{
+        const getUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/api/users",
+            { withCredentials: true })
+            setUser(res.data)
+            console.log(res.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUser()
+    }, [])
+
+
+        const incrementCart = async (e) => {
+            e.preventDefault()
+            try {
+                // const res = await axios.get("http://localhost:8000/api/users",
+                // { withCredentials: true })
+                // setUser(res.data)
+                // console.log(res.data)
+                await axios.put(`http://localhost:8000/api/users/${user._id}`,
+                {
+                    cartCount: user.cartCount + 1
+                },
+                { withCredentials: true }
+                )
+                
+            } catch (error) {
+                console.log(error)
+            } 
+    }
+
+
+    const cardStyle = {
+        width: '15%',
+        minWidth: '265px',
+        padding: '20px',
+        margin: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly'
+    }
+
+    const imageStyle = {
+        height: '260px',
+        width: '100%',
+        objectFit: 'contain',
+        marginTop: '10px'
+    }
+
+>>>>>>> origin/main
 
 
     return (
         <div>
+<<<<<<< HEAD
             <NavBar/>
             <Box sx={{flexGrow:1}}>
 
@@ -145,7 +238,41 @@ const Home = () => {
                             </Grid>
                             </Box>
 
+=======
+            <NavBar 
+            setSearchTerm={setSearchTerm}
+            user={user}
+            
+            />
+        <div style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
+            {productList.filter((val)=>{
+                if(searchTerm === ''){
+                    return val
+                } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                    return val
+                }
+            })
+            .map((product, index) => (
+
+
+                <Card sx={{ maxWidth: 345 }} elevation={10} key={index} style={cardStyle}>
+                    <Link style={{textDecoration: 'none', color: 'black', fontWeight:'500'}} to={`/product/${product.id}`}>
+                    {product.name}
+                    <img src={product.images} alt="product" style={imageStyle} />
+                    </Link>
+                    <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
+                        <IconButton color="primary" aria-label="add to shopping cart" onClick={incrementCart}>
+                            <AddShoppingCartIcon />
+                        </IconButton>                
+                    </CardContent>
+                </Card>
+            ))
+            }  
+>>>>>>> origin/main
         </div>
+        </div>
+        
     )
 }
 

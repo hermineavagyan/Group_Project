@@ -8,6 +8,6 @@
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.0",
-    "stripe": "^8.218.0"
+    "stripe": "^8.219.0"
   }
 }
