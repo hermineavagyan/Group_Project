@@ -88,10 +88,10 @@ module.exports = {
             }catch(err){
                 console.log(err);
             }},
-       
+
             findAllUsers: async (req, res) => {
                 try{
-                    const allUsers = await  User.find()
+                    const allUsers = await User.find()
                     res.json(allUsers);
                         }
                     catch(err){
@@ -122,5 +122,6 @@ module.exports = {
                     console.log("Something went wrong in updateUser")
                     res.status(400).json({message: "Something went wrong in update", error: err})
                 }
-            }
+            },
+
 }
