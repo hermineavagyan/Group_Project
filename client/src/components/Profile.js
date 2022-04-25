@@ -128,6 +128,7 @@ const Profile = () => {
                             <StyledTableCell align="right">{charge.amount.toLocaleString()}</StyledTableCell>
                             <StyledTableCell align="right"><Link to={{ pathname:`/${charge.receipt_url}`}} target="_blank">Click Me</Link></StyledTableCell>
     
+    
                             </StyledTableRow>
 
                                             )})
