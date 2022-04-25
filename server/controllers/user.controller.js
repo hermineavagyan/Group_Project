@@ -110,4 +110,17 @@ module.exports = {
                         res.json({ message: "Something went wrong in deleteOneUser()", error: err })
                     })
             },
+
+            updateUser: async (req, res) => {
+                try {
+                    const update = await User.findOneAndUpdate({_id: req.params.id},
+                        req.body,
+                        {new: true, runValidators: true}
+                        )
+                    res.json(update)
+                } catch (err) {
+                    console.log("Something went wrong in updateUser")
+                    res.status(400).json({message: "Something went wrong in update", error: err})
+                }
+            }
 }

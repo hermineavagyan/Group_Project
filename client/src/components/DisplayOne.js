@@ -51,14 +51,14 @@ const DisplayOne = () => {
     return (
         <>
             <NavBar/> 
-            <Grid style={{padding: '80px 0'}} xs='auto' >
+            <Grid style={{padding: '80px 0'}}  >
                 <Paper elevation={10} style={paperStyle}>
                     
                         <Typography variant='h5' style={{marginBottom: '60px'}}>
                         {product.name}
                         </Typography>
                         <img 
-                        style={{width:'50%', minWidth: '250px', margin: '10px auto'}}
+                        style={{width:'50%', minWidth: '250px', margin: '10px auto', maxWidth: '300px'}}
                         src={product.images}
                         alt='product'
                         />  
