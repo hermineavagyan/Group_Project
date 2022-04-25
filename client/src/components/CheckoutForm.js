@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import NavBar from './NavBar';
+import MyContext from './MyContext';
 // import axios from 'axios';
 
 /* We will pass all "cart" items as props to the CheckoutForm for submission. 
@@ -12,6 +13,8 @@ An idea about what the checkout form will include, will be:
 */
 
 const CheckoutForm = (props) => {
+
+    const context = useContext(MyContext);
     
     // const { orderTotal,}
 
@@ -70,6 +73,8 @@ const CheckoutForm = (props) => {
         }
     }
 
+    console.log(context.willState);
+
     return(
         <div>
             <NavBar />
@@ -84,7 +89,7 @@ const CheckoutForm = (props) => {
                             <p>Customer ID</p>
                         </div>
                         <div id="order-list-via-props">
-                            <table class="customTable">
+                            <table className="customTable">
                                 <thead>
                                     <tr>
                                     <th>Image</th>
