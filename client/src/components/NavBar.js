@@ -1,26 +1,23 @@
+import React, { useEffect, useState, useContext } from 'react'
 import { AppBar, Container, Toolbar, Typography, Box, Button, IconButton, TextField } from '@material-ui/core'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import axios from 'axios'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import React, { useEffect, useState } from 'react'
 import Link from '@mui/material/Link';
-
-
-
+import MyContext from './MyContext';
 
 const NavBar = (props) => {
 
-    const {setSearchTerm, user,} = props
-    const [cartNumber, setCartNumber] = useState(0)
+    const context = useContext(MyContext);
+    const {setSearchTerm, user } = props
 
     useEffect(()=>{
         const getUser = async () => {
             try {
-                const res = axios.get(`http://localhost:8000/api/users`,
+                const res = await axios.get(`http://localhost:8000/api/users`,
                 {withCredentials: true})
-                setCartNumber(res.data.cartCount)
-                console.log(cartNumber)
+                context.setCartCount(res.data.cartCount);
             } catch (error) {
                 console.log(error)
             }
@@ -38,9 +35,7 @@ const NavBar = (props) => {
                     component='div'
                     >MyMusician</Typography>
                 </Toolbar>
-
                 <form>
-                    
                     <TextField 
                     label='Search'
                     name='search'
@@ -51,21 +46,18 @@ const NavBar = (props) => {
                     }}
                     onChange={(e)=>{setSearchTerm(e.target.value)}}
                     />
-                    
                 </form>
                     <Box style={{display: 'flex'}}>
-                    <Box style={{display: 'flex', alignItems:'center'}}>
-                    <Link href={'#'} underline='none' color='inherit'>Profile</Link>
-                    
-                        <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
-                            <p style={{fontSize: '16px'}}>{user?.cartCount}</p>
-                        </IconButton>
-                    </Box>
-                        
+                        <Box style={{display: 'flex', alignItems:'center'}}>
+                            <Link href={'#'} underline='none' color='inherit'>Profile</Link>
+                            <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
+                                {/* <p style={{fontSize: '16px'}}>{user?.cartCount}</p> */}
+                                <p style={{fontSize: '16px'}}>{context.cartCount}</p>
+                            </IconButton>
+                        </Box>
                         <Button style={{color: 'white'}}>Log Out</Button>
                     </Box>
             </Container>
-
         </AppBar>
     )
 }
