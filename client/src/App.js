@@ -4,6 +4,7 @@ import DisplayOne from './components/DisplayOne';
 import Login from './components/Login';
 import Registration from './components/Registration';
 import Home from './views/Home';
+import OrderSuccess from './components/OrderSuccess';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route element={<Registration />} path='/registration' />
           <Route element={<Home />} path='/home' />
           <Route element={<DisplayOne />} path='/products/:id' />
+          <Route element={<OrderSuccess/>} path='/confirmation'/>
         </Routes>
       
       </div>
