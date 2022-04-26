@@ -127,23 +127,40 @@ module.exports = (app) => {
         res.send(chargePayload);
     })
 
-    // IMPORTANT HERE, use this.
+    // to re-calculate order items on the server-side, so that the cart item totals can't be manipulated on the front end.
+    // We should not do any calculation on the front end, so that should be updated in the future to POST to a route, and get back the totals separately.
     const calculateOrderAmount = (items) => {
-        // Replace this constant with a calculation of the order's amount
-        // Calculate the order total on the server to prevent
-        // people from directly manipulating the amount on the client
-        return 1400;
+        const itemsTotal = () => {
+            let sum = 0;
+            for(let i = 0; i < items.length; i++) {
+                let stringToNum = parseFloat(items[i].productPrice);
+                sum += stringToNum;
+            }
+            return sum;
+        }
+    
+        const shippingHandlingCalc = () => {
+            const retailTotal = itemsTotal();
+            const shipping = retailTotal * 0.02; //2% s&h.
+            return shipping;
+        }
+    
+        const orderTotal = () => {
+            return itemsTotal() + shippingHandlingCalc();
+        }
+
+        return orderTotal();
     };
 
     app.post('/create-payment-intent', async (req, res) => { //sending an empty object to here from client, returns the client secret.
-        const { paymentMethodType, currency, customerId, amount } = req.body; // the items to destructure from the request body.
+        const { paymentMethodType, currency, stripeCustomerId, cartItems, amount } = req.body; // the items to destructure from the request body.
         try {
             const paymentIntent = await stripe.paymentIntents.create({
-            // amount: 20555,
+            // amount: calculateOrderAmount(cartItems),
             amount: amount,
             currency: currency,
             payment_method_types: [paymentMethodType],
-            customer: 'cus_LYbWl5VyBOXf4b',
+            customer: stripeCustomerId,
             // customer: customerId, //when we are ready to pass the customerId to Stripe to charge the correct account.
             // currency: currency, //in case we wanted to pass the currency via destructure above
             // payment_method_types: [paymentMethodType], //in case we wanted to pass the currency via destructure above
