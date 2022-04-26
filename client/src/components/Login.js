@@ -24,10 +24,10 @@ const Login = (props) => {
 
     const btnStyle = {
         margin:'20px 0',
-        backgroundColor: '#c80a6b'
+        backgroundColor: '#9f29ad'
     }
 
-    const avatarStyle = {backgroundColor: '#c80a6b'}
+    const avatarStyle = {backgroundColor: '#fe902d'}
 
 
     const login = async (e) => {
