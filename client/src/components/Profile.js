@@ -100,7 +100,6 @@ const Profile = () => {
                             <p>{user.firstName}</p>
                             <p>{user.lastName}</p>
                         </div>
-                        <EditIcon sx = {{margin: "10% 0 10% 40%", fontSize: 30}}></EditIcon>
                     </div>
                     
                     <div style = {divStyle}>
@@ -109,7 +108,6 @@ const Profile = () => {
                             <p>Email: {user.email}</p>
                             <p>Phone: {user.phoneNumber}</p>
                         </div>
-                        <EditIcon sx = {{margin: "10% 0 10% 20%", fontSize: 30}}></EditIcon>
                     </div>
                 
                     <div style = {divStyle}>
@@ -118,7 +116,6 @@ const Profile = () => {
                             <p>{userAddress.street} {userAddress.city}</p>
                             <p>{userAddress.state} {userAddress.postalCode}</p>
                         </div>
-                        <EditIcon sx = {{margin: "10% 0 10% 20%", fontSize: 30}}></EditIcon>
                     </div>
 
                 </div>
