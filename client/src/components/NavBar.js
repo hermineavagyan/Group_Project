@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { AppBar, Container, Toolbar, Typography, Box, Button, IconButton, TextField } from '@material-ui/core'
 import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
 import axios from 'axios'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from '@mui/material/Link';
 import MyContext from './MyContext';
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const NavBar = (props) => {
 
-    const {id} = useParams()
     const context = useContext(MyContext);
-    const {setSearchTerm } = props
+    const {setSearchTerm, user } = props
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const getUser = async () => {
@@ -26,6 +26,20 @@ const NavBar = (props) => {
         }
         getUser()
     },[])
+
+    const logout = async (e) => {
+        try{
+            const res = await axios.post("http://localhost:8000/api/users/logout",
+                    {}, 
+                    {withCredentials: true,},)
+                    // console.log(res);
+                    // console.log(res.data);
+                    navigate("/");
+            } 
+            catch(err) {
+                console.log(err);
+            };
+    };
 
     return (
         <AppBar position='static' style={{marginBottom: '20px'}}>
@@ -52,13 +66,13 @@ const NavBar = (props) => {
                 </form>
                     <Box style={{display: 'flex'}}>
                         <Box style={{display: 'flex', alignItems:'center'}}>
-                            <Link href={`/users/${id}`} underline='none' color='inherit'>Profile</Link>
+                            <Link href={`/users/${user?._id}`} underline='none' color='inherit'>Profile</Link>
                             <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
                                 {/* <p style={{fontSize: '16px'}}>{user?.cartCount}</p> */}
                                 <p style={{fontSize: '16px'}}>{context.cartCount}</p>
                             </IconButton>
                         </Box>
-                        <Button style={{color: 'white'}}>Log Out</Button>
+                        <Button style={{color: 'white'}} onClick={logout}>Log Out</Button>
                     </Box>
             </Container>
         </AppBar>
