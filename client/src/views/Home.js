@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
-import CardMedia from '@mui/material/CardMedia';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import NavBar from "../components/NavBar";
@@ -83,38 +81,34 @@ const Home = () => {
         getUser()
     }, [])
 
-        const incrementCart = async (e) => {
-            e.preventDefault()
+        const incrementCart = async (e, index) => {
+            // e.preventDefault()
             try {
                 const res = await axios.get("http://localhost:8000/api/users",
                 { withCredentials: true })
                     setUser(res.data);
                     context.setCartCount(context.cartCount += 1);
                     // console.log(context.cartCount)
+                    
                 await axios.put(`http://localhost:8000/api/users/${user._id}`,
                 {
                     cartCount: context.cartCount,
                 },
                 { withCredentials: true })
-                // const clickedItemIndex = 
-                const cartList = await axios.post(`http://localhost:8000/api/addtocart`,
+                await axios.post(`http://localhost:8000/api/addtocart`,
                 {
                     "cartList": [
                         { 
-                        "productName": `${productList[1].name}`,
-                        "productImage": `${productList[1].images}`,
-                        // "productPrice": `${productList[0].price}`
-                        "productPrice": `${priceSearch(productList[1].id, productPrice)}`
+                        "productName": `${productList[index].name}`,
+                        "productImage": `${productList[index].images}`,
+                        "productPrice": `${priceSearch(productList[index].id, productPrice)}`
                         },
-                    ] 
+                    ],
+                    stripeCustomerId: user.customerId
+
                 },
-                    {
-                        "user": `${user.name}`
-                        
-                    },
-                    
+
                 { withCredentials: true })
-                
                 console.log(productList[0].name)
             } catch (error) {
                 console.log(error)
@@ -138,6 +132,7 @@ const Home = () => {
         marginTop: '10px'
     }
 
+
     return (
         <div>
             <NavBar 
@@ -145,7 +140,7 @@ const Home = () => {
             user={user}
             />
             <div style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
-                {productList.filter((val)=>{
+                {productList?.filter((val)=>{
                     if(searchTerm === ''){
                         return val
                     } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())){
@@ -153,14 +148,14 @@ const Home = () => {
                     }
                 })
                 .map((product, index) => (
-                    <Card sx={{ maxWidth: 345 }} elevation={10} key={index} style={cardStyle}>
+                    <Card elevation={10} key={index} style={cardStyle}>
                         <Link style={{textDecoration: 'none', color: 'black', fontWeight:'500'}} to={`/product/${product.id}`}>
                         {product.name}
                         <img src={product.images} alt="product" style={imageStyle} />
                         </Link>
                         <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
-                            <IconButton color="primary" aria-label="add to shopping cart" onClick={incrementCart}>
+                            <IconButton id={index} color="primary" aria-label="add to shopping cart" onClick={(e)=>incrementCart(e, index)}>
                                 <AddShoppingCartIcon />
                             </IconButton>                
                         </CardContent>
