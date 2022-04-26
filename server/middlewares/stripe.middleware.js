@@ -96,7 +96,7 @@ module.exports = (app) => {
         const getAllPrices = async () => {
             try {
                 const prices = await stripe.prices.list({
-                    limit: 15,
+                    limit: 20,
                 });
                 // console.log(prices);
                 return prices;

@@ -6,11 +6,13 @@ import axios from 'axios'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from '@mui/material/Link';
 import MyContext from './MyContext';
+import { useParams } from 'react-router-dom';
 
 const NavBar = (props) => {
 
+    const {id} = useParams()
     const context = useContext(MyContext);
-    const {setSearchTerm, user } = props
+    const {setSearchTerm } = props
 
     useEffect(()=>{
         const getUser = async () => {
@@ -27,13 +29,14 @@ const NavBar = (props) => {
 
     return (
         <AppBar position='static' style={{marginBottom: '20px'}}>
-            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: 'E0AF3A', height: "100px"}}>
+            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '#fe902d', height: "100px"}}>
                 <Toolbar disableGutters>
-                    <Typography
-                    variant='h4'
+                    <Link
+                    style={{fontSize:'40px', color:"white"}}
+                    underline='none'
                     noWrap
-                    component='div'
-                    >MyMusician</Typography>
+                    href={"/home"}
+                    >MyMusician</Link>
                 </Toolbar>
                 <form>
                     <TextField 
@@ -49,7 +52,7 @@ const NavBar = (props) => {
                 </form>
                     <Box style={{display: 'flex'}}>
                         <Box style={{display: 'flex', alignItems:'center'}}>
-                            <Link href={'#'} underline='none' color='inherit'>Profile</Link>
+                            <Link href={`/users/${id}`} underline='none' color='inherit'>Profile</Link>
                             <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
                                 {/* <p style={{fontSize: '16px'}}>{user?.cartCount}</p> */}
                                 <p style={{fontSize: '16px'}}>{context.cartCount}</p>

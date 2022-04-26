@@ -144,7 +144,7 @@ const Home = () => {
                         </Link>
                         <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
-                            <IconButton id={index} color="primary" aria-label="add to shopping cart" onClick={(e)=>incrementCart(e, index)}>
+                            <IconButton id={index} style={{color:'#9f29ad'}} aria-label="add to shopping cart" onClick={(e)=>incrementCart(e, index)}>
                                 <AddShoppingCartIcon />
                             </IconButton>                
                         </CardContent>
