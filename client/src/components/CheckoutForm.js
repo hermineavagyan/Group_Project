@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import NavBar from './NavBar';
@@ -19,6 +20,7 @@ const CheckoutForm = (props) => {
     const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
     const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
     const [ stripeCustomerId, setStripeCustomerId ] = useState('');
+    const navigate = useNavigate();
 
     const itemsTotal = () => {
         let sum = 0;
@@ -67,7 +69,7 @@ const CheckoutForm = (props) => {
             }
 
             // Create the payment intent on the server, we can pass whatever is needed here via props, inside this client secret const. Perhaps we are sending product information, or a cart id, or perhaps a customer id, or the shipping info, or a location, etc.
-            const { error: backendError, clientSecret } = await fetch('http://localhost:8000/create-payment-intent', { // Currently working with fetch.
+            const { error: backendError, clientSecret } = await fetch('http://localhost:8000/create-payment-intent', { // Currently working with fetch, update to axios in future release.
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,10 +77,9 @@ const CheckoutForm = (props) => {
                 body: JSON.stringify({
                     paymentMethodType: 'card',
                     currency: 'usd',
-                    // amount: orderTotal().toFixed(2),
-                    amount: parseInt(orderTotal()) * 100,
-                    // cartItems: cartItems,
+                    amount: parseInt(orderTotal() * 100),
                     stripeCustomerId: stripeCustomerId,
+                    description: `${cartItems[0].productName}, etc.`
                 }),
             }).then(r => r.json());
 
@@ -103,6 +104,10 @@ const CheckoutForm = (props) => {
 
             if(stripeError){ // might remove this in production.
                 console.log(stripeError.message)
+            }
+
+            if(!stripeError && !backendError){
+                navigate('/ordersuccess');
             }
 
         } catch (error) {
