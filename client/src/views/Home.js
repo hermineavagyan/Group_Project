@@ -98,8 +98,16 @@ const Home = () => {
                     "productImage": `${productList[index].images}`,
                     "productPrice": `${priceSearch(productList[index].id, productPrice)}`,
                     stripeCustomerId: user.customerId
+<<<<<<< HEAD
                 }, { withCredentials: true })
                 // console.log(productList[0].name)
+=======
+
+                },
+
+                { withCredentials: true })
+                console.log(productList[0].name)
+>>>>>>> main
             } catch (error) {
                 console.log(error)
         } 
