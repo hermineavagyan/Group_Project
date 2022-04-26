@@ -8,6 +8,7 @@ import CheckoutForm from './components/CheckoutForm'
 import Home from './views/Home';
 import Profile from './components/Profile';
 import MyContext from './components/MyContext'; // global state.
+import OrderSuccess from './components/OrderSuccess';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
               <Route element={<CheckoutForm />} path="/checkout" />
               <Route element={<DisplayOne />} path='/product/:id' />
               <Route element={<Profile />} path='/users/:id' />
+              <Route element={<OrderSuccess />} path='/ordersuccess' />
             </Routes>
           </MyContext.Provider>
 

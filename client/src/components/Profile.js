@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography'
-import EditIcon from '@mui/icons-material/Edit';
+
 
 const Profile = () => {
 
@@ -25,7 +25,7 @@ const Profile = () => {
         border: "2px solid black"
     }
     const nameBoxStyle = {
-        backgroundColor: "#afb3b0",
+        backgroundColor: "#afb3b090",
         margin: "20px",
         display: "flex", 
         justifyContent: "flexStart", 
@@ -63,6 +63,7 @@ const Profile = () => {
     const[user, setUser] = useState({});
     const[userAddress, setUserAddress] = useState({});
     const[chargesInfo, setChargesInfo] = useState([]);
+    
 
     
     useEffect(()=> {
@@ -87,7 +88,7 @@ const Profile = () => {
 
     return (
         <div>
-            <NavBar setSearchTerm=""/>
+            <NavBar/>
             
             <Typography variant ="h4" style = {typographyStyle} >Manage your Profile</Typography>
 
@@ -100,6 +101,7 @@ const Profile = () => {
                             <p>{user.firstName}</p>
                             <p>{user.lastName}</p>
                         </div>
+                        
                     </div>
                     
                     <div style = {divStyle}>
@@ -108,6 +110,7 @@ const Profile = () => {
                             <p>Email: {user.email}</p>
                             <p>Phone: {user.phoneNumber}</p>
                         </div>
+                        
                     </div>
                 
                     <div style = {divStyle}>
@@ -116,6 +119,7 @@ const Profile = () => {
                             <p>{userAddress.street} {userAddress.city}</p>
                             <p>{userAddress.state} {userAddress.postalCode}</p>
                         </div>
+                        
                     </div>
 
                 </div>

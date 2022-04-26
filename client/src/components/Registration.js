@@ -48,10 +48,10 @@ const Registration = () => {
 
     const btnStyle = {
         margin:'40px 0',
-        backgroundColor: '#c80a6b'
+        backgroundColor: '#9f29ad'
     }
 
-    const avatarStyle = {backgroundColor: '#c80a6b'}
+    const avatarStyle = {backgroundColor: '#fe902d'}
 
     const handleChange = (e) =>{
         console.log(e)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Button, Card, Box, CardContent, IconButton} from '@material-ui/core';
+import {Card, CardContent, IconButton} from '@material-ui/core';
 import Typography from '@mui/material/Typography'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import NavBar from "../components/NavBar";
@@ -17,7 +17,7 @@ const Home = () => {
     const [price, setPrice] = useState("");
     const [productPrice, setProductPrice] = useState([]);
     const [searchTerm, setSearchTerm] = useState('')
-    const navigate = useNavigate();
+
     
     useEffect(()=> {
         const allProducts = async () => {
@@ -45,19 +45,7 @@ const Home = () => {
         allProducts()
     }, [])
 
-    // const logout = async (e) => {
-    //     try{
-    //         const res = await axios.post("http://localhost:8000/api/users/logout",
-    //                 {}, 
-    //                 {withCredentials: true,},)
-    //                 // console.log(res);
-    //                 // console.log(res.data);
-    //                 navigate("/");
-    //         } 
-    //         catch(err) {
-    //             console.log(err);
-    //         };
-    // };
+    
 
     const priceSearch = (mapProductId, products) => { 
         const targetProduct = products.filter(product => product.id === mapProductId)
@@ -144,7 +132,7 @@ const Home = () => {
                         </Link>
                         <CardContent style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Typography fontWeight={700}>${priceSearch(product.id, productPrice)}</Typography>  
-                            <IconButton id={index} color="primary" aria-label="add to shopping cart" onClick={(e)=>incrementCart(e, index)}>
+                            <IconButton id={index} style={{color:'#9f29ad'}} aria-label="add to shopping cart" onClick={(e)=>incrementCart(e, index)}>
                                 <AddShoppingCartIcon />
                             </IconButton>                
                         </CardContent>
