@@ -153,7 +153,7 @@ module.exports = (app) => {
     };
 
     app.post('/create-payment-intent', async (req, res) => { //sending an empty object to here from client, returns the client secret.
-        const { paymentMethodType, currency, stripeCustomerId, cartItems, amount } = req.body; // the items to destructure from the request body.
+        const { paymentMethodType, currency, stripeCustomerId, cartItems, amount, description } = req.body; // the items to destructure from the request body.
         try {
             const paymentIntent = await stripe.paymentIntents.create({
             // amount: calculateOrderAmount(cartItems),
@@ -161,6 +161,7 @@ module.exports = (app) => {
             currency: currency,
             payment_method_types: [paymentMethodType],
             customer: stripeCustomerId,
+            description: description,
             // customer: customerId, //when we are ready to pass the customerId to Stripe to charge the correct account.
             // currency: currency, //in case we wanted to pass the currency via destructure above
             // payment_method_types: [paymentMethodType], //in case we wanted to pass the currency via destructure above
