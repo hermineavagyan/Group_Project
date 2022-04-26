@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography'
-import EditIcon from '@mui/icons-material/Edit';
+
 
 const Profile = () => {
 
@@ -101,7 +101,6 @@ const Profile = () => {
                             <p>{user.firstName}</p>
                             <p>{user.lastName}</p>
                         </div>
-
                     </div>
                     
                     <div style = {divStyle}>
