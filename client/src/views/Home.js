@@ -81,38 +81,36 @@ const Home = () => {
         getUser()
     }, [])
 
-        const incrementCart = async (e, index) => {
-            // e.preventDefault()
-            try {
-                const res = await axios.get("http://localhost:8000/api/users",
-                { withCredentials: true })
-                    setUser(res.data);
-                    context.setCartCount(context.cartCount += 1);
-                    // console.log(context.cartCount)
-                    
-                await axios.put(`http://localhost:8000/api/users/${user._id}`,
+    const incrementCart = async (e, index) => {
+        // e.preventDefault()
+        try {
+            const res = await axios.get("http://localhost:8000/api/users", { withCredentials: true })
+                setUser(res.data);
+                context.setCartCount(context.cartCount += 1);
+                // console.log(context.cartCount)
+            await axios.put(`http://localhost:8000/api/users/${user._id}`,
                 {
                     cartCount: context.cartCount,
-                },
-                { withCredentials: true })
-                await axios.post(`http://localhost:8000/api/addtocart`,
+                }, { withCredentials: true })
+            await axios.post(`http://localhost:8000/api/addtocart`,
                 {
-                    "cartList": [
-                        { 
-                        "productName": `${productList[index].name}`,
-                        "productImage": `${productList[index].images}`,
-                        "productPrice": `${priceSearch(productList[index].id, productPrice)}`
-                        },
-                    ],
+                    "productName": `${productList[index].name}`,
+                    "productImage": `${productList[index].images}`,
+                    "productPrice": `${priceSearch(productList[index].id, productPrice)}`,
                     stripeCustomerId: user.customerId
+<<<<<<< HEAD
+                }, { withCredentials: true })
+                // console.log(productList[0].name)
+=======
 
                 },
 
                 { withCredentials: true })
                 console.log(productList[0].name)
+>>>>>>> main
             } catch (error) {
                 console.log(error)
-            } 
+        } 
     }
 
     const cardStyle = {
@@ -131,7 +129,6 @@ const Home = () => {
         objectFit: 'contain',
         marginTop: '10px'
     }
-
 
     return (
         <div>
