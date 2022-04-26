@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import { Paper, Container, CardMedia, Button, Box,  Typography, Grid } from '@material-ui/core'
 import NavBar from './NavBar'
+import MyContext from './MyContext'
+
 
 
 const DisplayOne = () => {
 
     const {id} = useParams()
     const [product, setProduct] = useState({})
+    const [user, setUser] = useState({});
     const [productPrice, setProductPrice] = useState('')
+    const context = useContext(MyContext)
 
 
     useEffect(()=> {
@@ -30,6 +34,52 @@ const DisplayOne = () => {
         }
         itemGetter()
     }, [id])
+
+    useEffect(()=>{
+        const getUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/api/users",
+            { withCredentials: true })
+            setUser(res.data)
+            // console.log(res.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUser()
+    }, [])
+
+
+    const incrementCart = async (e, index) => {
+        // e.preventDefault()
+        try {
+            const res = await axios.get("http://localhost:8000/api/users",
+            { withCredentials: true })
+                setUser(res.data);
+                context.setCartCount(context.cartCount += 1);
+                // console.log(context.cartCount)
+                
+            await axios.put(`http://localhost:8000/api/users/${user._id}`,
+            {
+                cartCount: context.cartCount,
+            },
+            { withCredentials: true })
+            await axios.post(`http://localhost:8000/api/addtocart`,
+            {
+                
+                    "productName": `${product.name}`,
+                    "productImage": `${product.images}`,
+                    "productPrice": `${productPrice}`,
+                    stripeCustomerId: user.customerId
+
+            },
+
+            { withCredentials: true })
+            // console.log(context.productList[0].name)
+        } catch (error) {
+            console.log(error)
+        } 
+}
 
 
 
@@ -64,7 +114,7 @@ const DisplayOne = () => {
                         />  
                         <Typography style={{fontWeight:"bold", fontSize:'18px'}}>$ {productPrice.toLocaleString()}</Typography>
                         <Typography>{product.description}</Typography>
-                        <Button style={{width:'160px'}} variant="contained">Add to Cart</Button>
+                        <Button style={{width:'160px'}} variant="contained" onClick={incrementCart}>Add to Cart</Button>
                     
                 </Paper>
             </Grid>

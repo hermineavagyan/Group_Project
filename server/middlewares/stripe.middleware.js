@@ -44,7 +44,7 @@ module.exports = (app) => {
         const getProducts = async () => {
             try {
                 const products = await stripe.products.list({
-                    limit: 10,
+                    limit: 20,
                 });
                 return products.data;
                 // console.log(products.data);
