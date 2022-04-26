@@ -107,6 +107,7 @@ const Home = () => {
                     stripeCustomerId: user.customerId
 
                 },
+
                 { withCredentials: true })
                 console.log(productList[0].name)
             } catch (error) {
