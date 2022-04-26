@@ -18,7 +18,7 @@
 
 .checkout-main {
   display: flex;
-  margin-top: 30px;
+  margin-top: 30px!important;
   width: 998px;
   height: 100%;
   margin: 0 auto;
@@ -96,8 +96,25 @@
   margin-left: 15px;
 }
 
+.customTable {
+  text-align: left;
+  padding: 40px;
+  border: 1px solid grey;
+  border-radius: 6px;
+  margin-bottom: 400px;
+}
+
 #checkout-image {
-  width: 10%;
+  width: 30%;
+  margin-top: 18px;
+}
+
+#row-review-items {
+  display: flex;
+}
+
+#margin-botttom {
+  margin-bottom: 8px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
