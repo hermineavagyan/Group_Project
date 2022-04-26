@@ -101,7 +101,6 @@ const Profile = () => {
                             <p>{user.firstName}</p>
                             <p>{user.lastName}</p>
                         </div>
-                        
                     </div>
                     
                     <div style = {divStyle}>
@@ -110,7 +109,7 @@ const Profile = () => {
                             <p>Email: {user.email}</p>
                             <p>Phone: {user.phoneNumber}</p>
                         </div>
-                        
+                      
                     </div>
                 
                     <div style = {divStyle}>
