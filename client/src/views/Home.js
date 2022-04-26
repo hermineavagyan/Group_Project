@@ -109,8 +109,10 @@ const Home = () => {
                     ] 
                 },
                     {
-                        user: res.data.name
+                        "user": `${user.name}`
+                        
                     },
+                    
                 { withCredentials: true })
                 
                 console.log(productList[0].name)

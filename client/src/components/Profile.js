@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import NavBar from "../components/NavBar";
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -10,6 +9,8 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography'
+import EditIcon from '@mui/icons-material/Edit';
 
 const Profile = () => {
 
@@ -22,6 +23,23 @@ const Profile = () => {
         width: "600px", 
         height: "15%",
         border: "2px solid black"
+    }
+    const nameBoxStyle = {
+        backgroundColor: "#afb3b0",
+        margin: "20px",
+        display: "flex", 
+        justifyContent: "flexStart", 
+        alignItems: "flexEnd", 
+        borderRadius: "5px", 
+        width: "600px", 
+        height: "5%",
+        border: "2px solid black"
+    }
+    const typographyStyle = {
+        textAlign: "center",
+        fontWeight: "700",
+        margin: "20px 0"
+        
     }
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -37,13 +55,12 @@ const Profile = () => {
         '&:nth-of-type(odd)': {
             backgroundColor: theme.palette.action.hover,
         },
-        // hide last border
         '&:last-child td, &:last-child th': {
             border: 0,
         },
     }));
 
-    const [user, setUser] = useState({});
+    const[user, setUser] = useState({});
     const[userAddress, setUserAddress] = useState({});
     const[chargesInfo, setChargesInfo] = useState([]);
 
@@ -71,25 +88,28 @@ const Profile = () => {
     return (
         <div>
             <NavBar setSearchTerm=""/>
+            
+            <Typography variant ="h4" style = {typographyStyle} >Manage your Profile</Typography>
 
-            <h2>Manage your profile</h2>
-            <Paper elevation = {3} sx = {{maxWidth: 1000, marginLeft: 20, paddingTop: 5 , paddingBottom: 5, backgroundColor: "#f5f4f2"}}> 
+            <Paper elevation = {3} sx = {{maxWidth: 1000, margin: "0 auto", paddingTop: 5 , paddingBottom: 5, backgroundColor: "#f5f4f2"}}> 
                 <div style = {{marginLeft: "20%"}}>
                 
-                    <div style = {divStyle}>
+                    <div style = {nameBoxStyle}>
                         <h4 style = {{marginLeft: "5%"}}>Name</h4>
                         <div style = {{margin: "20px"}}>
-                            <p>{user.firstName} </p>
+                            <p>{user.firstName}</p>
                             <p>{user.lastName}</p>
                         </div>
+                        <EditIcon sx = {{margin: "10% 0 10% 40%", fontSize: 30}}></EditIcon>
                     </div>
                     
                     <div style = {divStyle}>
-                        <h4 style = {{marginLeft: "5%"}}>Contact Details</h4>
+                        <h4 style = {{marginLeft: "5%"}}>Contacts</h4>
                         <div style = {{margin: "20px"}}>
                             <p>Email: {user.email}</p>
                             <p>Phone: {user.phoneNumber}</p>
                         </div>
+                        <EditIcon sx = {{margin: "10% 0 10% 20%", fontSize: 30}}></EditIcon>
                     </div>
                 
                     <div style = {divStyle}>
@@ -98,23 +118,24 @@ const Profile = () => {
                             <p>{userAddress.street} {userAddress.city}</p>
                             <p>{userAddress.state} {userAddress.postalCode}</p>
                         </div>
+                        <EditIcon sx = {{margin: "10% 0 10% 20%", fontSize: 30}}></EditIcon>
                     </div>
 
                 </div>
             </Paper>
                     
-            <h2>Order history</h2>
+            <Typography variant ="h4" style = {typographyStyle} >Order History</Typography>
 
-                <TableContainer sx = {{maxWidth: 1000, marginLeft: 20 }} component={Paper}>
-                    <Table sx={{ minWidth: 700}} aria-label="customized table">
+                <TableContainer sx = {{maxWidth: 1000, margin: "20px auto"}} component={Paper}>
+                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
-                        <TableRow>
-                            <StyledTableCell align="right">Recipt #</StyledTableCell>
-                            <StyledTableCell align="right">Date</StyledTableCell>
-                            <StyledTableCell align="right">Description</StyledTableCell>
-                            <StyledTableCell align="right">Price</StyledTableCell>
-                            <StyledTableCell align="right">URL</StyledTableCell>
-                        </TableRow>
+                            <TableRow>
+                                <StyledTableCell align="right">Recipt #</StyledTableCell>
+                                <StyledTableCell align="right">Date</StyledTableCell>
+                                <StyledTableCell align="right">Description</StyledTableCell>
+                                <StyledTableCell align="right">Price</StyledTableCell>
+                                <StyledTableCell align="right">URL</StyledTableCell>
+                            </TableRow>
                         </TableHead>
                         <TableBody>
                             {chargesInfo?.map((charge, index)=>{
@@ -122,16 +143,16 @@ const Profile = () => {
                                 return (
                             <StyledTableRow key={index}>
 
-                            <StyledTableCell align="right">{charge.receipt_number}</StyledTableCell>
-                            <StyledTableCell align="right">{formattedDate(charge.created)}</StyledTableCell>
-                            <StyledTableCell align="right">{charge.description}</StyledTableCell>
-                            <StyledTableCell align="right">{charge.amount.toLocaleString()}</StyledTableCell>
-                            <StyledTableCell align="right"><Link to={{ pathname:`/${charge.receipt_url}`}} target="_blank">Click Me</Link></StyledTableCell>
-    
-    
+                                <StyledTableCell align="right">{charge.receipt_number}</StyledTableCell>
+                                <StyledTableCell align="right">{formattedDate(charge.created)}</StyledTableCell>
+                                <StyledTableCell align="right">{charge.description}</StyledTableCell>
+                                <StyledTableCell align="right">{charge.amount.toLocaleString()}</StyledTableCell>
+                                <StyledTableCell align="right">
+                                    <a href ={charge.receipt_url.toString()}>Click Me</a>
+                                </StyledTableCell>
                             </StyledTableRow>
 
-                                            )})
+                                        )})
                             }
                         </TableBody>
                     </Table>
@@ -139,5 +160,4 @@ const Profile = () => {
         </div>
     )
 }
-
 export default Profile
