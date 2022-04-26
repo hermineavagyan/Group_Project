@@ -43,9 +43,6 @@ const CheckoutForm = (props) => {
 
     const elements = useElements();
     const stripe = useStripe();
-    
-    const testCurrency = 'usd';
-    const orderSum = 35000;
 
     useEffect(()=>{
         const getCartItems = async () => {
@@ -77,9 +74,11 @@ const CheckoutForm = (props) => {
                 },
                 body: JSON.stringify({
                     paymentMethodType: 'card',
-                    // currency: 'usd',
-                    currency: testCurrency,
-                    amount: orderSum,
+                    currency: 'usd',
+                    // amount: orderTotal().toFixed(2),
+                    amount: parseInt(orderTotal()) * 100,
+                    // cartItems: cartItems,
+                    stripeCustomerId: stripeCustomerId,
                 }),
             }).then(r => r.json());
 
@@ -157,7 +156,7 @@ const CheckoutForm = (props) => {
                                             <tr key={index}>
                                                 <td id="checkout-image"><img id="checkout-image" src={item.productImage} alt="product"/></td>
                                                 <td>{item.productName}</td>
-                                                <td>${item.productPrice}</td>
+                                                <td>${parseFloat(item.productPrice).toLocaleString()}</td>
                                             </tr>
                                         )})
                                     }
