@@ -1,38 +1,27 @@
 const mongoose = require('mongoose')
 
-
 const CartSchema = new mongoose.Schema({
-    cartList: [
+    productName: {
+        type: String,
+    },
 
-        {
-            productName: {
-                type: String,
-            },
-        
-        
-            productImage: {
-                type: String,
-            },
-        
-        
-            productPrice: {
-                type: String,
-            }
-        }   
-            
-        ],
+    productImage: {
+        type: String,
+    },
 
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
+    productPrice: {
+        type: String,
+    },
 
-        stripeCustomerId: {
-            type: String
-        }
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
 
+    stripeCustomerId: {
+        type: String
+    }
 })
-
 
 const Cart = mongoose.model('Cart', CartSchema)
 

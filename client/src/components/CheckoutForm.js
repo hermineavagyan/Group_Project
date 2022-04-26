@@ -17,6 +17,8 @@ const CheckoutForm = (props) => {
 
     const context = useContext(MyContext);
     const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
+    const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
+    const [ stripeCustomerId, setStripeCustomerId ] = useState('');
     
     // const { orderTotal,}
 
@@ -29,8 +31,11 @@ const CheckoutForm = (props) => {
     useEffect(()=>{
         const getCartItems = async () => {
             try {
-                const loggedInUser = await axios.get("http://localhost:8000/api/users", { withCredentials: true })
-                const cartItems = await axios.get(`http://localhost:8000/`)
+                const res1 = await axios.get("http://localhost:8000/api/users", { withCredentials: true });
+                setLoggedInUser(res1.data);
+                setStripeCustomerId(res1.data.customerId);
+                const res2 = await axios.get(`http://localhost:8000/api/itemsbyuser/${res1.data._id}`, { withCredentials: true });
+                setCartItems(res2.data);
             } catch (error) {
                 console.log(error);
             }
@@ -87,21 +92,29 @@ const CheckoutForm = (props) => {
         }
     }
 
-    console.log(context.willState);
-
     return(
         <div>
             <NavBar />
             <div className="checkout-main">
                 <div className="two-thirds">
-                    <div>
+                    <div id="row-shipping-address">
                         <div id="user-information-container">
-                            <p>Full Name</p>
-                            <p>Email Address</p>
-                            <p>Billing Address</p>
-                            <p>Phone Number</p>
-                            <p>Customer ID</p>
+                            <h3>1</h3>
                         </div>
+                        <div id="user-information-container" className="left-margin">
+                            <h3>Shipping Address</h3>
+                        </div>
+                        <div id="user-information-container">
+                            <ul id="li-shipping-address">
+                                <li>{loggedInUser?.firstName} {loggedInUser?.lastName}</li>
+                                <li>{loggedInUser?.address?.street}</li>
+                                <li>{loggedInUser?.address?.city} {loggedInUser?.address?.state}, {loggedInUser?.address?.country}</li>
+                                <li>{loggedInUser?.phoneNumber}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
                         <div id="order-list-via-props">
                             <table className="customTable">
                                 <thead>
@@ -112,31 +125,15 @@ const CheckoutForm = (props) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
-                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
-                                        <td>$849.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
-                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
-                                        <td>$849.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
-                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
-                                        <td>$849.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
-                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
-                                        <td>$849.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img className="img-size" src="https://files.stripe.com/links/MDB8YWNjdF8xNExTUDU0RjZPbTNzSjF0fGZsX3Rlc3RfMGRvY1VadnNjYWN6YlNYYzZFNlRlU20z00EAmci3WO" alt="test" /></td>
-                                        <td><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
-                                        <td>$849.99</td>
-                                    </tr>
+                                    {cartItems?.map((item, index)=>{
+                                        return(
+                                            <tr key={index}>
+                                                <td><img id="checkout-image" src={item.productImage} alt="product"/></td>
+                                                <td>{item.productName}</td>
+                                                <td>${item.productPrice}</td>
+                                            </tr>
+                                        )})
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -166,7 +163,7 @@ const CheckoutForm = (props) => {
                         <form id="payment-form" onSubmit={handleSubmit}>
                             {/* <label id="card-label" htmlFor="card-element">Card</label> */}
                                 <CardElement id="card-element" />
-                            <button id="pay-button">Pay</button>
+                            <button id="pay-button">Place your order</button>
                         </form>
                     </div>
                 </div>

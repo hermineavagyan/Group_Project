@@ -19,8 +19,9 @@
 .checkout-main {
   display: flex;
   margin-top: 30px;
-  width: 1280px;
+  width: 998px;
   height: 100%;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -75,6 +76,28 @@
 
 .img-size {
   width: 15%;
+}
+
+#li-shipping-address {
+  list-style-type: none;
+  padding-inline-start: 35px;
+  text-align: left;
+  margin-block-start: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+#row-shipping-address {
+  display: flex;
+}
+
+.left-margin {
+  margin-left: 15px;
+}
+
+#checkout-image {
+  width: 10%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
