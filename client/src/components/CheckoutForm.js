@@ -19,14 +19,33 @@ const CheckoutForm = (props) => {
     const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
     const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
     const [ stripeCustomerId, setStripeCustomerId ] = useState('');
-    
+
+    const itemsTotal = () => {
+        let sum = 0;
+        for(let i = 0; i < cartItems.length; i++) {
+            let stringToNum = parseFloat(cartItems[i].productPrice);
+            sum += stringToNum;
+        }
+        return sum;
+    }
+
+    const shippingHandlingCalc = () => {
+        const retailTotal = itemsTotal();
+        const shipping = retailTotal * 0.02; //2% s&h.
+        return shipping;
+    }
+
+    const orderTotal = () => {
+        return itemsTotal() + shippingHandlingCalc();
+    }
+
     // const { orderTotal,}
 
     const elements = useElements();
     const stripe = useStripe();
     
     const testCurrency = 'usd';
-    const orderTotal = 35000;
+    const orderSum = 35000;
 
     useEffect(()=>{
         const getCartItems = async () => {
@@ -60,7 +79,7 @@ const CheckoutForm = (props) => {
                     paymentMethodType: 'card',
                     // currency: 'usd',
                     currency: testCurrency,
-                    amount: orderTotal,
+                    amount: orderSum,
                 }),
             }).then(r => r.json());
 
@@ -116,8 +135,16 @@ const CheckoutForm = (props) => {
                     <hr />
                     <div>
                         <div id="order-list-via-props">
+                            <div id="row-review-items">
+                                <div id="user-information-container">
+                                    <h3>2</h3>
+                                </div>
+                                <div id="user-information-container" className="left-margin">
+                                    <h3>Review order items</h3>
+                                </div>
+                            </div>
                             <table className="customTable">
-                                <thead>
+                                <thead id="margin-bottom">
                                     <tr>
                                     <th>Image</th>
                                     <th>Description</th>
@@ -128,7 +155,7 @@ const CheckoutForm = (props) => {
                                     {cartItems?.map((item, index)=>{
                                         return(
                                             <tr key={index}>
-                                                <td><img id="checkout-image" src={item.productImage} alt="product"/></td>
+                                                <td id="checkout-image"><img id="checkout-image" src={item.productImage} alt="product"/></td>
                                                 <td>{item.productName}</td>
                                                 <td>${item.productPrice}</td>
                                             </tr>
@@ -146,16 +173,16 @@ const CheckoutForm = (props) => {
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td id="item-count-price">Items '(3)':</td>
-                                        <td className="pad">$83.24</td>
+                                        <td id="item-count-price">Items ({cartItems.length}):</td>
+                                        <td className="pad">${itemsTotal().toLocaleString()}</td>
                                     </tr>
                                     <tr>
                                         <td id="shipping-and-handling">Shipping and handling:</td>
-                                        <td className="pad">$83.24</td>
+                                        <td className="pad">${shippingHandlingCalc().toLocaleString()}</td>
                                     </tr>
                                     <tr>
                                         <td id="order-total">Order total:</td>
-                                        <td className="pad">$90.00</td>
+                                        <td className="pad">${orderTotal().toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                             </table>
