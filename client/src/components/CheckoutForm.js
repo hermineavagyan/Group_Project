@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import axios from 'axios';
 import NavBar from './NavBar';
 import MyContext from './MyContext';
 // import axios from 'axios';
@@ -15,6 +16,7 @@ An idea about what the checkout form will include, will be:
 const CheckoutForm = (props) => {
 
     const context = useContext(MyContext);
+    const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
     
     // const { orderTotal,}
 
@@ -23,6 +25,18 @@ const CheckoutForm = (props) => {
     
     const testCurrency = 'usd';
     const orderTotal = 35000;
+
+    useEffect(()=>{
+        const getCartItems = async () => {
+            try {
+                const loggedInUser = await axios.get("http://localhost:8000/api/users", { withCredentials: true })
+                const cartItems = await axios.get(`http://localhost:8000/`)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getCartItems();
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // I believe we will remove this when we go live and redirect to an 'order success' page.
