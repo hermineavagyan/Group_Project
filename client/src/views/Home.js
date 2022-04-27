@@ -116,7 +116,7 @@ const Home = () => {
             setSearchTerm={setSearchTerm}
             user={user}
             />
-            <div style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
+            <div id="search-filter" style={{display: 'flex', flexWrap:'wrap', justifyContent: 'center'}}>
                 {productList?.filter((val)=>{
                     if(searchTerm === ''){
                         return val

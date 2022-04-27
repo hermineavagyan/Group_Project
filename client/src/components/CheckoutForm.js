@@ -113,7 +113,9 @@ const CheckoutForm = (props) => {
 
     return(
         <div>
-            <NavBar />
+            <NavBar 
+            dontDisplaySearch={'filterHide'}
+            />
             <div className="checkout-main">
                 <div className="two-thirds">
                     <div id="row-shipping-address">

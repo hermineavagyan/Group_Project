@@ -5,8 +5,6 @@ import { Paper, Container, CardMedia, Button, Box,  Typography, Grid } from '@ma
 import NavBar from './NavBar'
 import MyContext from './MyContext'
 
-
-
 const DisplayOne = () => {
 
     const {id} = useParams()
@@ -14,7 +12,6 @@ const DisplayOne = () => {
     const [user, setUser] = useState({});
     const [productPrice, setProductPrice] = useState('')
     const context = useContext(MyContext)
-
 
     useEffect(()=> {
         const itemGetter = async () => {
@@ -49,7 +46,6 @@ const DisplayOne = () => {
         getUser()
     }, [])
 
-
     const incrementCart = async (e, index) => {
         // e.preventDefault()
         try {
@@ -66,22 +62,17 @@ const DisplayOne = () => {
             { withCredentials: true })
             await axios.post(`http://localhost:8000/api/addtocart`,
             {
-                
-                    "productName": `${product.name}`,
-                    "productImage": `${product.images}`,
-                    "productPrice": `${productPrice}`,
-                    stripeCustomerId: user.customerId
-
+                "productName": `${product.name}`,
+                "productImage": `${product.images}`,
+                "productPrice": `${productPrice}`,
+                stripeCustomerId: user.customerId
             },
-
             { withCredentials: true })
             // console.log(context.productList[0].name)
         } catch (error) {
             console.log(error)
         } 
 }
-
-
 
     const paperStyle = {
         padding: '80px',
@@ -97,28 +88,27 @@ const DisplayOne = () => {
         
     }
 
-
     return (
-        <>
-            <NavBar/> 
+        <div>
+            <NavBar 
+            dontDisplaySearch={'filterHide'}
+            />
             <Grid style={{padding: '80px 0'}}  >
                 <Paper elevation={10} style={paperStyle}>
-                    
-                        <Typography variant='h5' style={{marginBottom: '60px'}}>
+                    <Typography variant='h5' style={{marginBottom: '60px'}}>
                         {product.name}
-                        </Typography>
-                        <img 
-                        style={{width:'50%', minWidth: '250px', margin: '10px auto', maxWidth: '300px'}}
-                        src={product.images}
-                        alt='product'
-                        />  
-                        <Typography style={{fontWeight:"bold", fontSize:'18px'}}>$ {productPrice.toLocaleString()}</Typography>
-                        <Typography>{product.description}</Typography>
-                        <Button style={{width:'160px', backgroundColor:'#9f29ad', color:'white'}} variant="contained" onClick={incrementCart}>Add to Cart</Button>
-                    
+                    </Typography>
+                    <img 
+                    style={{width:'50%', minWidth: '250px', margin: '10px auto', maxWidth: '300px'}}
+                    src={product.images}
+                    alt='product'
+                    />  
+                    <Typography style={{fontWeight:"bold", fontSize:'18px'}}>$ {productPrice.toLocaleString()}</Typography>
+                    <Typography>{product.description}</Typography>
+                    <Button style={{width:'160px', backgroundColor:'#9f29ad', color:'white'}} variant="contained" onClick={incrementCart}>Add to Cart</Button>
                 </Paper>
             </Grid>
-        </>
+        </div>
     )
 }
 
