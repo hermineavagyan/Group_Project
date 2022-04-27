@@ -4,6 +4,8 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import NavBar from './NavBar';
 import MyContext from './MyContext';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 // import axios from 'axios';
 
 const CheckoutForm = (props) => {
@@ -111,6 +113,8 @@ const CheckoutForm = (props) => {
         }
     }
 
+
+
     return(
         <div>
             <NavBar 
@@ -193,6 +197,7 @@ const CheckoutForm = (props) => {
                             <CardElement id="card-element" />
                             <button id="pay-button">Place your order</button>
                         </form>
+                        
                     </div>
                 </div>
             </div>
