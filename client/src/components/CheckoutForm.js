@@ -3,6 +3,8 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import NavBar from './NavBar';
 import MyContext from './MyContext';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 // import axios from 'axios';
 
 /* We will pass all "cart" items as props to the CheckoutForm for submission. 
@@ -19,6 +21,9 @@ const CheckoutForm = (props) => {
     const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
     const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
     const [ stripeCustomerId, setStripeCustomerId ] = useState('');
+    const [progress, setProgress] = React.useState(0);
+    const [buffer, setBuffer] = React.useState(10);
+
     
     // const { orderTotal,}
 
@@ -92,6 +97,33 @@ const CheckoutForm = (props) => {
         }
     }
 
+
+    
+    const progressRef = React.useRef(() => {});
+    React.useEffect(() => {
+        progressRef.current = () => {
+        if (progress > 100) {
+            setProgress(0);
+            setBuffer(10);
+        } else {
+            const diff = Math.random() * 10;
+            const diff2 = Math.random() * 10;
+            setProgress(progress + diff);
+            setBuffer(progress + diff + diff2);
+        }
+        };
+    });
+
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+        progressRef.current();
+        }, 500);
+
+        return () => {
+        clearInterval(timer);
+        };
+    }, []);
+
     return(
         <div>
             <NavBar />
@@ -163,8 +195,11 @@ const CheckoutForm = (props) => {
                         <form id="payment-form" onSubmit={handleSubmit}>
                             {/* <label id="card-label" htmlFor="card-element">Card</label> */}
                                 <CardElement id="card-element" />
-                            <button id="pay-button">Place your order</button>
+                            <button id="pay-button" >Place your order</button>
                         </form>
+                        <Box sx={{ width: '100%' }}>
+                        <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+                        </Box>
                     </div>
                 </div>
             </div>
