@@ -41,7 +41,7 @@ const Registration = () => {
     const paperStyle = {
         padding: '40px',
         height: '50vh',
-        minHeight: '840px',
+        minHeight: '850px',
         width: '300px',
         margin: '20px auto'
     }
@@ -52,6 +52,10 @@ const Registration = () => {
     }
 
     const avatarStyle = {backgroundColor: '#fe902d'}
+
+    const regInputs = {
+        padding:'2px 0',
+    }
 
     const handleChange = (e) =>{
         console.log(e)
@@ -137,6 +141,7 @@ const Registration = () => {
                         type="text"
                         name='firstName'
                         value={user.firstName}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.firstName}
                         helperText={errors.firstName? errors.firstName.message : null}
@@ -148,6 +153,7 @@ const Registration = () => {
                         type="text"
                         name='lastName'
                         value={user.lastName}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.lastName}
                         helperText={errors.lastName? errors.lastName.message : null}
@@ -160,6 +166,7 @@ const Registration = () => {
                         type="text"
                         name='email'
                         value={user.email}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.email}
                         helperText={errors.email? errors.email.message : null}
@@ -172,6 +179,7 @@ const Registration = () => {
                         type="text"
                         name='phoneNumber'
                         value={user.phoneNumber}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.phoneNumber}
                         helperText={errors.phoneNumber? errors.phoneNumber.message : null}
@@ -183,6 +191,7 @@ const Registration = () => {
                         type="password" 
                         name="password" 
                         value={user.password}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.password}
                         helperText={errors.password? errors.password.message : null}
@@ -195,6 +204,7 @@ const Registration = () => {
                         type="password" 
                         name="confirmPassword" 
                         value={user.confirmPassword}
+                        style={regInputs}
                         onChange={handleChange} 
                         error={!!errors?.confirmPassword}
                         helperText={errors.confirmPassword? errors.confirmPassword.message : null}
@@ -205,6 +215,7 @@ const Registration = () => {
                             placeholder='Enter a country'
                             defaultValue = 'US'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='country'
                             disabled = {true}
@@ -214,6 +225,7 @@ const Registration = () => {
                             label='City'
                             placeholder='Enter City'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='city'
                             value={user.city}
@@ -223,6 +235,7 @@ const Registration = () => {
                             label='Street'
                             placeholder='Enter Street'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='street'
                             value={user.street}
@@ -235,6 +248,7 @@ const Registration = () => {
                                 id="demo-simple-select"
                                 value={selectedState}
                                 label="State"
+                                style={regInputs}
                                 onChange={e => handleStateSelect(e)}>
                                 <MenuItem value="">Select the state</MenuItem>
                                 {states.map((state, key) => (
@@ -250,6 +264,7 @@ const Registration = () => {
                             fullWidth
                             type="text"
                             name='postalCode'
+                            style={regInputs}
                             value={user.postalCode}
                             onChange={handleChange}
                             />
