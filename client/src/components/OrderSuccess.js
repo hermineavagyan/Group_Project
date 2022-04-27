@@ -19,7 +19,9 @@ const textStyle = {
 
     return (
         <div>
-        <NavBar />
+        <NavBar 
+        dontDisplaySearch={'filterHide'}
+        />
             <Card elevation={10} style={cardStyle} >
                 <Typography variant='h3' style={textStyle}>Order Confirmed!</Typography>
                 <img src={require('../img/party.png')} alt="party" style={{width:'25%', display:'block', margin:'60px auto'}} />

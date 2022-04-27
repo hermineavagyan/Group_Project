@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import NavBar from './NavBar';
@@ -7,31 +8,35 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 // import axios from 'axios';
 
-/* We will pass all "cart" items as props to the CheckoutForm for submission. 
-An idea about what the checkout form will include, will be:
-
-- a sub-header (below the main header) with the customer's billing information (name, email, phone #, billing address, etc.)
-- a list of items (maybe using map?) that are in the cart state. Perhaps we can reuse the cart exactly... like this: <Cart />, on this checkout form in the return.
-- the order total
-*/
-
 const CheckoutForm = (props) => {
 
     const context = useContext(MyContext);
-    const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
+    const [ cartItems, setCartItems ] = useState([]);
     const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
     const [ stripeCustomerId, setStripeCustomerId ] = useState('');
-    const [progress, setProgress] = React.useState(0);
-    const [buffer, setBuffer] = React.useState(10);
+    const navigate = useNavigate();
 
-    
-    // const { orderTotal,}
+    const itemsTotal = () => {
+        let sum = 0;
+        for(let i = 0; i < cartItems.length; i++) {
+            let stringToNum = parseFloat(cartItems[i].productPrice);
+            sum += stringToNum;
+        }
+        return sum;
+    }
+
+    const shippingHandlingCalc = () => {
+        const retailTotal = itemsTotal();
+        const shipping = retailTotal * 0.02; //2% s&h.
+        return shipping;
+    }
+
+    const orderTotal = () => {
+        return itemsTotal() + shippingHandlingCalc();
+    }
 
     const elements = useElements();
     const stripe = useStripe();
-    
-    const testCurrency = 'usd';
-    const orderTotal = 35000;
 
     useEffect(()=>{
         const getCartItems = async () => {
@@ -49,23 +54,24 @@ const CheckoutForm = (props) => {
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // I believe we will remove this when we go live and redirect to an 'order success' page.
+        e.preventDefault();
         try {
             if(!stripe || !elements){
                 return;
             }
 
             // Create the payment intent on the server, we can pass whatever is needed here via props, inside this client secret const. Perhaps we are sending product information, or a cart id, or perhaps a customer id, or the shipping info, or a location, etc.
-            const { error: backendError, clientSecret } = await fetch('http://localhost:8000/create-payment-intent', { // Currently working with fetch.
+            const { error: backendError, clientSecret } = await fetch('http://localhost:8000/create-payment-intent', { // Currently working with fetch, update to axios in future release.
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     paymentMethodType: 'card',
-                    // currency: 'usd',
-                    currency: testCurrency,
-                    amount: orderTotal,
+                    currency: 'usd',
+                    amount: parseInt(orderTotal() * 100),
+                    stripeCustomerId: stripeCustomerId,
+                    description: `${cartItems[0].productName}, etc.`
                 }),
             }).then(r => r.json());
 
@@ -88,8 +94,18 @@ const CheckoutForm = (props) => {
                 }
             )
 
-            if(stripeError){ // might remove this in production.
+            if(stripeError){
                 console.log(stripeError.message)
+            }
+
+            if(!stripeError && !backendError){
+                context.setCartCount(0);
+                axios.get('http://localhost:8000/api/cart/delete');
+                axios.put(`http://localhost:8000/api/users/${loggedInUser._id}`,
+                {
+                    cartCount: 0,
+                }, { withCredentials: true })
+                navigate('/ordersuccess');
             }
 
         } catch (error) {
@@ -98,35 +114,12 @@ const CheckoutForm = (props) => {
     }
 
 
-    
-    const progressRef = React.useRef(() => {});
-    React.useEffect(() => {
-        progressRef.current = () => {
-        if (progress > 100) {
-            setProgress(0);
-            setBuffer(10);
-        } else {
-            const diff = Math.random() * 10;
-            const diff2 = Math.random() * 10;
-            setProgress(progress + diff);
-            setBuffer(progress + diff + diff2);
-        }
-        };
-    });
-
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-        progressRef.current();
-        }, 500);
-
-        return () => {
-        clearInterval(timer);
-        };
-    }, []);
 
     return(
         <div>
-            <NavBar />
+            <NavBar 
+            dontDisplaySearch={'filterHide'}
+            />
             <div className="checkout-main">
                 <div className="two-thirds">
                     <div id="row-shipping-address">
@@ -148,8 +141,16 @@ const CheckoutForm = (props) => {
                     <hr />
                     <div>
                         <div id="order-list-via-props">
+                            <div id="row-review-items">
+                                <div id="user-information-container">
+                                    <h3>2</h3>
+                                </div>
+                                <div id="user-information-container" className="left-margin">
+                                    <h3>Review order items</h3>
+                                </div>
+                            </div>
                             <table className="customTable">
-                                <thead>
+                                <thead id="margin-bottom">
                                     <tr>
                                     <th>Image</th>
                                     <th>Description</th>
@@ -160,9 +161,9 @@ const CheckoutForm = (props) => {
                                     {cartItems?.map((item, index)=>{
                                         return(
                                             <tr key={index}>
-                                                <td><img id="checkout-image" src={item.productImage} alt="product"/></td>
+                                                <td id="checkout-image"><img id="checkout-image" src={item.productImage} alt="product"/></td>
                                                 <td>{item.productName}</td>
-                                                <td>${item.productPrice}</td>
+                                                <td>${parseFloat(item.productPrice).toLocaleString()}</td>
                                             </tr>
                                         )})
                                     }
@@ -178,28 +179,25 @@ const CheckoutForm = (props) => {
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td id="item-count-price">Items '(3)':</td>
-                                        <td className="pad">$83.24</td>
+                                        <td id="item-count-price">Items ({cartItems.length}):</td>
+                                        <td className="pad">${itemsTotal().toLocaleString()}</td>
                                     </tr>
                                     <tr>
                                         <td id="shipping-and-handling">Shipping and handling:</td>
-                                        <td className="pad">$83.24</td>
+                                        <td className="pad">${shippingHandlingCalc().toLocaleString()}</td>
                                     </tr>
                                     <tr>
                                         <td id="order-total">Order total:</td>
-                                        <td className="pad">$90.00</td>
+                                        <td className="pad">${orderTotal().toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <form id="payment-form" onSubmit={handleSubmit}>
-                            {/* <label id="card-label" htmlFor="card-element">Card</label> */}
-                                <CardElement id="card-element" />
-                            <button id="pay-button" >Place your order</button>
+                            <CardElement id="card-element" />
+                            <button id="pay-button">Place your order</button>
                         </form>
-                        <Box sx={{ width: '100%' }}>
-                        <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
-                        </Box>
+                        
                     </div>
                 </div>
             </div>
