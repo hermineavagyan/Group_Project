@@ -114,7 +114,7 @@ const DisplayOne = () => {
                         />  
                         <Typography style={{fontWeight:"bold", fontSize:'18px'}}>$ {productPrice.toLocaleString()}</Typography>
                         <Typography>{product.description}</Typography>
-                        <Button style={{width:'160px'}} variant="contained" onClick={incrementCart}>Add to Cart</Button>
+                        <Button style={{width:'160px', backgroundColor:'#9f29ad', color:'white'}} variant="contained" onClick={incrementCart}>Add to Cart</Button>
                     
                 </Paper>
             </Grid>

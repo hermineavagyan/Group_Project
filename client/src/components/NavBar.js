@@ -29,7 +29,7 @@ const NavBar = (props) => {
 
     const logout = async (e) => {
         try{
-            const res = await axios.post("http://localhost:8000/api/users/logout",
+            await axios.post("http://localhost:8000/api/users/logout",
                     {}, 
                     {withCredentials: true,},)
                     // console.log(res);
@@ -43,37 +43,36 @@ const NavBar = (props) => {
 
     return (
         <AppBar position='static' style={{marginBottom: '20px'}}>
-            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '#fe902d', height: "100px"}}>
+            <Container maxWidth={false} style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', backgroundColor: '#fe902d', height: "120px"}}>
                 <Toolbar disableGutters>
                     <Link
-                    style={{fontSize:'40px', color:"white"}}
+                    style={{width:'260px'}}
                     underline='none'
                     noWrap
                     href={"/home"}
-                    >MyMusician</Link>
+                    >
+                    <img src={require('../img/mymusician.png')} alt="logo" style={{width:'100%'}} />
+                    </Link>
                 </Toolbar>
-                <form>
+                <form style={{width:"260px"}}>
                     <TextField 
                     label='Search'
                     name='search'
                     variant='outlined'
                     size='small'
-                    sx={{
-                        color: 'white'
-                    }}
+                    style={{margin: '0 auto', width:'80%'}}
                     onChange={(e)=>{setSearchTerm(e.target.value)}}
                     />
                 </form>
-                    <Box style={{display: 'flex'}}>
-                        <Box style={{display: 'flex', alignItems:'center'}}>
+                    
+                        <Box style={{display: 'flex', alignItems:'center', justifyContent: 'space-between', width: '260px', flexWrap:'wrap'}}>
                             <Link href={`/users/${user?._id}`} underline='none' color='inherit'>Profile</Link>
                             <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
-                                {/* <p style={{fontSize: '16px'}}>{user?.cartCount}</p> */}
                                 <p style={{fontSize: '16px'}}>{context.cartCount}</p>
                             </IconButton>
+                            <Button style={{color: 'white', width:'75px', fontSize:'12px', height: '30px'}} onClick={logout}>Log Out</Button>
                         </Box>
-                        <Button style={{color: 'white'}} onClick={logout}>Log Out</Button>
-                    </Box>
+                    
             </Container>
         </AppBar>
     )
