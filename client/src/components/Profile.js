@@ -19,21 +19,21 @@ const Profile = () => {
         display: "flex", 
         justifyContent: "flexStart", 
         alignItems: "flexEnd", 
-        borderRadius: "5px", 
+        borderRadius: "8px", 
         width: "600px", 
         height: "15%",
-        border: "2px solid black"
+        border: "2px solid lightgray"
     }
     const nameBoxStyle = {
-        backgroundColor: "#afb3b090",
+        backgroundColor: "#d8dfedac",
         margin: "20px",
         display: "flex", 
         justifyContent: "flexStart", 
         alignItems: "flexEnd", 
-        borderRadius: "5px", 
+        borderRadius: "8px", 
         width: "600px", 
         height: "5%",
-        border: "2px solid black"
+        
     }
     const typographyStyle = {
         textAlign: "center",

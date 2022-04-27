@@ -121,7 +121,9 @@ const Registration = () => {
 
     return (
         <Grid>
-        <Typography variant='h2' align='center' style={{margin: '50px 0'}}>MyMusician</Typography>
+            <Grid style={{width:'400px',display:'block', margin:'60px auto'}}>
+            <img src={require('../img/mymusician-black.png')} alt="logo" style={{width:'90%', margin:'0 auto', display:'block'}}/>
+            </Grid>
             <Paper elevation={10} style={paperStyle}>
                 <form onSubmit={register}>
                 <Grid align='center'>
