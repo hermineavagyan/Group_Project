@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const NavBar = (props) => {
 
     const context = useContext(MyContext);
-    const {setSearchTerm, user } = props
+    const { setSearchTerm, user, dontDisplaySearch } = props
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -30,11 +30,11 @@ const NavBar = (props) => {
     const logout = async (e) => {
         try{
             await axios.post("http://localhost:8000/api/users/logout",
-                    {}, 
-                    {withCredentials: true,},)
-                    // console.log(res);
-                    // console.log(res.data);
-                    navigate("/");
+                {}, 
+                {withCredentials: true,},)
+                // console.log(res);
+                // console.log(res.data);
+                navigate("/");
             } 
             catch(err) {
                 console.log(err);
@@ -54,7 +54,7 @@ const NavBar = (props) => {
                     <img src={require('../img/mymusician.png')} alt="logo" style={{width:'100%'}} />
                     </Link>
                 </Toolbar>
-                <form style={{width:"260px"}}>
+                <form className={`${dontDisplaySearch}`} style={{width:"260px"}}>
                     <TextField 
                     label='Search'
                     name='search'
@@ -67,7 +67,7 @@ const NavBar = (props) => {
                     
                         <Box style={{display: 'flex', alignItems:'center', justifyContent: 'space-between', width: '260px', flexWrap:'wrap'}}>
                             <Link href={`/users/${user?._id}`} underline='none' color='inherit'>Profile</Link>
-                            <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
+                            <IconButton style={{color: 'white'}} onClick={() => navigate('/checkout')}>{<ShoppingCartIcon/>}
                                 <p style={{fontSize: '16px'}}>{context.cartCount}</p>
                             </IconButton>
                             <Button style={{color: 'white', width:'75px', fontSize:'12px', height: '30px'}} onClick={logout}>Log Out</Button>

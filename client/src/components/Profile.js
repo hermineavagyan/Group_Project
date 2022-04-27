@@ -18,8 +18,10 @@ const Profile = () => {
         margin: "20px",
         display: "flex", 
         justifyContent: "flexStart", 
-        alignItems: "flexEnd", 
-        borderRadius: "8px", 
+        alignItems: "center",
+        marginBottom: "35px!important",
+        marginTop: "0px",
+        borderRadius: "8px",
         width: "600px", 
         height: "15%",
         border: "2px solid lightgray"
@@ -29,18 +31,17 @@ const Profile = () => {
         margin: "20px",
         display: "flex", 
         justifyContent: "flexStart", 
-        alignItems: "flexEnd", 
+        alignItems: "center", 
         borderRadius: "8px", 
         width: "600px", 
         height: "5%",
-        
     }
     const typographyStyle = {
         textAlign: "center",
         fontWeight: "700",
-        margin: "20px 0"
-        
+        margin: "20px 0"  
     }
+
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
             backgroundColor: theme.palette.common.black,
@@ -64,8 +65,6 @@ const Profile = () => {
     const[userAddress, setUserAddress] = useState({});
     const[chargesInfo, setChargesInfo] = useState([]);
     
-
-    
     useEffect(()=> {
         const userChargesGetter = async () => {
             try {
@@ -85,74 +84,61 @@ const Profile = () => {
         return  new Date(time * 1000).toLocaleDateString();
     }
 
+    const centsToDollars = (chargeAmount)=>{
+        return chargeAmount / 100;
+    }
 
     return (
         <div>
-            <NavBar/>
-            
-            <Typography variant ="h4" style = {typographyStyle} >Manage your Profile</Typography>
-
+            <NavBar 
+            dontDisplaySearch={'filterHide'}
+            />
+            <Typography variant ="h4" style = {typographyStyle} >User Profile</Typography>
             <Paper elevation = {3} sx = {{maxWidth: 1000, margin: "0 auto", paddingTop: 5 , paddingBottom: 5, backgroundColor: "#f5f4f2"}}> 
                 <div style = {{marginLeft: "20%"}}>
-                
                     <div style = {nameBoxStyle}>
-                        <h4 style = {{marginLeft: "5%"}}>Name</h4>
-                        <div style = {{margin: "20px"}}>
-                            <p>{user.firstName}</p>
-                            <p>{user.lastName}</p>
+                        <h4 style = {{marginLeft: "5%"}}>Name:</h4>
+                        <div style = {{marginLeft: "15px"}}>
+                            <p>{user.firstName} {user.lastName}</p>
                         </div>
                     </div>
-                    
                     <div style = {divStyle}>
-                        <h4 style = {{marginLeft: "5%"}}>Contacts</h4>
-                        <div style = {{margin: "20px"}}>
-                            <p>Email: {user.email}</p>
-                            <p>Phone: {user.phoneNumber}</p>
+                        <h4 style = {{marginLeft: "5%", marginBottom: "18px", marginTop: "0px"}}>Contact:</h4>
+                        <div style = {{marginLeft: "15px"}}>
+                            <p>Email: {user.email} <br />Phone: {user.phoneNumber}</p>
                         </div>
-                      
                     </div>
-                
                     <div style = {divStyle}>
-                        <h4 style = {{marginLeft: "5%"}}>Address</h4>
-                        <div style = {{margin: "20px"}}>
-                            <p>{userAddress.street} {userAddress.city}</p>
-                            <p>{userAddress.state} {userAddress.postalCode}</p>
+                        <h4 style = {{marginLeft: "5%", marginBottom: "40px", marginTop: "0px"}}>Address:</h4>
+                        <div style = {{marginLeft: "15px"}}>
+                            <p>{userAddress.street} <br />{userAddress.city} {userAddress.state} <br/>{userAddress.postalCode}</p>
                         </div>
-                        
                     </div>
-
                 </div>
             </Paper>
-                    
             <Typography variant ="h4" style = {typographyStyle} >Order History</Typography>
-
-                <TableContainer sx = {{maxWidth: 1000, margin: "20px auto"}} component={Paper}>
+                <TableContainer sx = {{maxWidth: 1000, margin: "20px auto", marginBottom: "300px"}} component={Paper}>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell align="right">Recipt #</StyledTableCell>
                                 <StyledTableCell align="right">Date</StyledTableCell>
                                 <StyledTableCell align="right">Description</StyledTableCell>
                                 <StyledTableCell align="right">Price</StyledTableCell>
-                                <StyledTableCell align="right">URL</StyledTableCell>
+                                <StyledTableCell align="right">Receipt URL</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {chargesInfo?.map((charge, index)=>{
-                            
                                 return (
-                            <StyledTableRow key={index}>
-
-                                <StyledTableCell align="right">{charge.receipt_number}</StyledTableCell>
-                                <StyledTableCell align="right">{formattedDate(charge.created)}</StyledTableCell>
-                                <StyledTableCell align="right">{charge.description}</StyledTableCell>
-                                <StyledTableCell align="right">{charge.amount.toLocaleString()}</StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <a href ={charge.receipt_url.toString()}>Click Me</a>
-                                </StyledTableCell>
-                            </StyledTableRow>
-
-                                        )})
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell align="right">{formattedDate(charge.created)}</StyledTableCell>
+                                        <StyledTableCell align="right">{charge.description}</StyledTableCell>
+                                        <StyledTableCell align="right">{centsToDollars(charge.amount).toLocaleString("en-US", {style:"currency", currency:"USD"})}</StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            <a href ={charge.receipt_url.toString()}>Link</a>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                )})
                             }
                         </TableBody>
                     </Table>

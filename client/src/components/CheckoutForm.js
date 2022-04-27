@@ -6,18 +6,10 @@ import NavBar from './NavBar';
 import MyContext from './MyContext';
 // import axios from 'axios';
 
-/* We will pass all "cart" items as props to the CheckoutForm for submission. 
-An idea about what the checkout form will include, will be:
-
-- a sub-header (below the main header) with the customer's billing information (name, email, phone #, billing address, etc.)
-- a list of items (maybe using map?) that are in the cart state. Perhaps we can reuse the cart exactly... like this: <Cart />, on this checkout form in the return.
-- the order total
-*/
-
 const CheckoutForm = (props) => {
 
     const context = useContext(MyContext);
-    const [ cartItems, setCartItems ] = useState([]); // double check that it's an array and not an obj.
+    const [ cartItems, setCartItems ] = useState([]);
     const [ loggedInUser, setLoggedInUser ] = useState(''); // primary registered user id in database.
     const [ stripeCustomerId, setStripeCustomerId ] = useState('');
     const navigate = useNavigate();
@@ -41,8 +33,6 @@ const CheckoutForm = (props) => {
         return itemsTotal() + shippingHandlingCalc();
     }
 
-    // const { orderTotal,}
-
     const elements = useElements();
     const stripe = useStripe();
 
@@ -62,7 +52,7 @@ const CheckoutForm = (props) => {
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // I believe we will remove this when we go live and redirect to an 'order success' page.
+        e.preventDefault();
         try {
             if(!stripe || !elements){
                 return;
@@ -102,11 +92,17 @@ const CheckoutForm = (props) => {
                 }
             )
 
-            if(stripeError){ // might remove this in production.
+            if(stripeError){
                 console.log(stripeError.message)
             }
 
             if(!stripeError && !backendError){
+                context.setCartCount(0);
+                axios.get('http://localhost:8000/api/cart/delete');
+                axios.put(`http://localhost:8000/api/users/${loggedInUser._id}`,
+                {
+                    cartCount: 0,
+                }, { withCredentials: true })
                 navigate('/ordersuccess');
             }
 
@@ -117,7 +113,9 @@ const CheckoutForm = (props) => {
 
     return(
         <div>
-            <NavBar />
+            <NavBar 
+            dontDisplaySearch={'filterHide'}
+            />
             <div className="checkout-main">
                 <div className="two-thirds">
                     <div id="row-shipping-address">
@@ -192,8 +190,7 @@ const CheckoutForm = (props) => {
                             </table>
                         </div>
                         <form id="payment-form" onSubmit={handleSubmit}>
-                            {/* <label id="card-label" htmlFor="card-element">Card</label> */}
-                                <CardElement id="card-element" />
+                            <CardElement id="card-element" />
                             <button id="pay-button">Place your order</button>
                         </form>
                     </div>
