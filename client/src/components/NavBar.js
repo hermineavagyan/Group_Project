@@ -67,7 +67,7 @@ const NavBar = (props) => {
                     
                         <Box style={{display: 'flex', alignItems:'center', justifyContent: 'space-between', width: '260px', flexWrap:'wrap'}}>
                             <Link href={`/users/${user?._id}`} underline='none' color='inherit'>Profile</Link>
-                            <IconButton style={{color: 'white'}}> {<ShoppingCartIcon/>}
+                            <IconButton style={{color: 'white'}} onClick={() => navigate('/checkout')}>{<ShoppingCartIcon/>}
                                 <p style={{fontSize: '16px'}}>{context.cartCount}</p>
                             </IconButton>
                             <Button style={{color: 'white', width:'75px', fontSize:'12px', height: '30px'}} onClick={logout}>Log Out</Button>

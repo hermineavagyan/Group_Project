@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 module.exports = {
 
     productCreate: (req, res) => {
-
         const newProductObject = new Cart(req.body);
         const decodedJWT = jwt.decode(req.cookies. usertoken,{
             complete: true
@@ -36,7 +35,6 @@ module.exports = {
     findAllCartItemsByUser: (req, res)=>{
         if(req.jwtpayload.id !== req.params.id){
             console.log("Not the user")
-    
             User.findOne({id: req.params.id})
             .then((userNotLoggedIn)=>{
                 Cart.find({user: userNotLoggedIn._id})
@@ -63,6 +61,17 @@ module.exports = {
                 console.log(err)
                 res.status(400).json(err)
             })
+        }
+    },
+
+    deleteCartforUser: async (req, res) => { //note this deletes ALL documents (for all users) from the cart.
+        try {
+            const delCart = await Cart.deleteMany();
+            res.json(delCart);
+            console.log('Deleted Cart');
+        } catch (err) {
+            console.log("deleteCartforUser failed");
+                res.json({ message: "Something went wrong in deleteCartforUser", error: err })
         }
     },
 }
