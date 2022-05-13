@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {Card, CardContent, IconButton} from '@material-ui/core';
+import {Card, CardContent, IconButton} from '@mui/material';
 import Typography from '@mui/material/Typography'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import NavBar from "../components/NavBar";

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { Avatar, Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
-import AudiotrackIcon from '@material-ui/icons/Audiotrack'
+import { Avatar, Button, Grid, Paper, TextField, Typography } from '@mui/material'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 
 
 
@@ -74,6 +74,7 @@ const Login = (props) => {
                         <Typography style={{color:'red'}}>{errorMessage ? errorMessage : ''}</Typography>
                     </Grid>
                         <TextField 
+                        variant='standard'
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
@@ -84,6 +85,7 @@ const Login = (props) => {
                         style={loginInputs}
                         />
                         <TextField
+                        variant='standard'
                         label='Password'
                         placeholder='Enter Password'
                         fullWidth

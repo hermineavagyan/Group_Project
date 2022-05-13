@@ -38,7 +38,7 @@
   float: left;
   background-color: #635bff;
   border-radius: 5px;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.786);
   font-weight: 700;
   border: none;
 }

@@ -1,4 +1,4 @@
-import { Card, CardMedia, Typography } from '@material-ui/core'
+import { Card, CardMedia, Typography } from '@mui/material'
 import { margin } from '@mui/system'
 import React from 'react'
 import NavBar from './NavBar'

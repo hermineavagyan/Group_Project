@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Avatar, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from '@material-ui/core'
-import AudiotrackIcon from '@material-ui/icons/Audiotrack'
+import { Avatar, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from '@mui/material'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { State }  from 'country-state-city';
 
 const Registration = () => {
@@ -135,6 +135,7 @@ const Registration = () => {
                 <h2>Registration</h2>
                 </Grid>
                         <TextField
+                        variant='standard'
                         label='First Name'
                         placeholder='Enter First Name'
                         fullWidth
@@ -147,6 +148,7 @@ const Registration = () => {
                         helperText={errors.firstName? errors.firstName.message : null}
                         />
                         <TextField
+                        variant='standard'
                         label='Last Name'
                         placeholder='Enter First Name'
                         fullWidth
@@ -160,6 +162,7 @@ const Registration = () => {
                         />
             
                         <TextField 
+                        variant='standard'
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
@@ -173,6 +176,7 @@ const Registration = () => {
                         />
 
                         <TextField
+                        variant='standard'
                         label='Phone Number'
                         placeholder='Enter Phone Number'
                         fullWidth
@@ -185,6 +189,7 @@ const Registration = () => {
                         helperText={errors.phoneNumber? errors.phoneNumber.message : null}
                         />
                         <TextField
+                        variant='standard'
                         label='Password'
                         placeholder='Enter Password'
                         fullWidth
@@ -198,6 +203,7 @@ const Registration = () => {
                         />
                         
                         <TextField 
+                        variant='standard'
                         label='Confirm Password'
                         placeholder='Enter Confirm Password'
                         fullWidth
@@ -211,6 +217,7 @@ const Registration = () => {
                         />
                             <Typography variant='subtitle1' align='center' style={{marginTop: '20px'}}>Address</Typography>
                             <TextField
+                            variant='standard'
                             label='Country'
                             placeholder='Enter a country'
                             defaultValue = 'US'
@@ -222,6 +229,7 @@ const Registration = () => {
                             // onChange={handleChange}
                             />
                             <TextField
+                            variant='standard'
                             label='City'
                             placeholder='Enter City'
                             fullWidth
@@ -232,6 +240,7 @@ const Registration = () => {
                             onChange={handleChange}
                             />
                             <TextField
+                            variant='standard'
                             label='Street'
                             placeholder='Enter Street'
                             fullWidth
@@ -243,12 +252,14 @@ const Registration = () => {
                             />
                             
                             {/* <InputLabel id="demo-simple-select-label">State</InputLabel> */}
-                            <Select
+                            <Grid style={{display: 'flex', }}>
+                                <Select
+                                variant='standard'
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={selectedState}
                                 label="State"
-                                style={regInputs}
+                                style={{marginRight:'20px', padding:'2px 0'}}
                                 onChange={e => handleStateSelect(e)}>
                                 <MenuItem value="">Select the state</MenuItem>
                                 {states.map((state, key) => (
@@ -256,18 +267,21 @@ const Registration = () => {
                                     {state}
                                 </MenuItem>
                                 ))}
-                            </Select>
+                                </Select>
+                                
 
-                            <TextField
-                            label='Postal Code'
-                            placeholder='Enter Postal Code'
-                            fullWidth
-                            type="text"
-                            name='postalCode'
-                            style={regInputs}
-                            value={user.postalCode}
-                            onChange={handleChange}
-                            />
+                                <TextField
+                                variant='standard'
+                                label='Postal Code'
+                                placeholder='Enter Postal Code'
+                                type="text"
+                                name='postalCode'
+                                style={{ width: '95px'}}
+                                value={user.postalCode}
+                                onChange={handleChange}
+                                />
+                            </Grid>
+                            
                         
                         <Button type='submit' color='primary' fullWidth variant='contained' style={btnStyle}>Register</Button>
                 </form>
