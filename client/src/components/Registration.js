@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Avatar, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from '@material-ui/core'
-import AudiotrackIcon from '@material-ui/icons/Audiotrack'
+import { Avatar, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from '@mui/material'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { State }  from 'country-state-city';
 
 const Registration = () => {
@@ -41,7 +41,7 @@ const Registration = () => {
     const paperStyle = {
         padding: '40px',
         height: '50vh',
-        minHeight: '840px',
+        minHeight: '850px',
         width: '300px',
         margin: '20px auto'
     }
@@ -52,6 +52,10 @@ const Registration = () => {
     }
 
     const avatarStyle = {backgroundColor: '#fe902d'}
+
+    const regInputs = {
+        padding:'2px 0',
+    }
 
     const handleChange = (e) =>{
         console.log(e)
@@ -131,98 +135,116 @@ const Registration = () => {
                 <h2>Registration</h2>
                 </Grid>
                         <TextField
+                        variant='standard'
                         label='First Name'
                         placeholder='Enter First Name'
                         fullWidth
                         type="text"
                         name='firstName'
                         value={user.firstName}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.firstName}
                         helperText={errors.firstName? errors.firstName.message : null}
                         />
                         <TextField
+                        variant='standard'
                         label='Last Name'
                         placeholder='Enter First Name'
                         fullWidth
                         type="text"
                         name='lastName'
                         value={user.lastName}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.lastName}
                         helperText={errors.lastName? errors.lastName.message : null}
                         />
             
                         <TextField 
+                        variant='standard'
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
                         type="text"
                         name='email'
                         value={user.email}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.email}
                         helperText={errors.email? errors.email.message : null}
                         />
 
                         <TextField
+                        variant='standard'
                         label='Phone Number'
                         placeholder='Enter Phone Number'
                         fullWidth
                         type="text"
                         name='phoneNumber'
                         value={user.phoneNumber}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.phoneNumber}
                         helperText={errors.phoneNumber? errors.phoneNumber.message : null}
                         />
                         <TextField
+                        variant='standard'
                         label='Password'
                         placeholder='Enter Password'
                         fullWidth
                         type="password" 
                         name="password" 
                         value={user.password}
+                        style={regInputs}
                         onChange={handleChange}
                         error={!!errors?.password}
                         helperText={errors.password? errors.password.message : null}
                         />
                         
                         <TextField 
+                        variant='standard'
                         label='Confirm Password'
                         placeholder='Enter Confirm Password'
                         fullWidth
                         type="password" 
                         name="confirmPassword" 
                         value={user.confirmPassword}
+                        style={regInputs}
                         onChange={handleChange} 
                         error={!!errors?.confirmPassword}
                         helperText={errors.confirmPassword? errors.confirmPassword.message : null}
                         />
                             <Typography variant='subtitle1' align='center' style={{marginTop: '20px'}}>Address</Typography>
                             <TextField
+                            variant='standard'
                             label='Country'
                             placeholder='Enter a country'
                             defaultValue = 'US'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='country'
                             disabled = {true}
                             // onChange={handleChange}
                             />
                             <TextField
+                            variant='standard'
                             label='City'
                             placeholder='Enter City'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='city'
                             value={user.city}
                             onChange={handleChange}
                             />
                             <TextField
+                            variant='standard'
                             label='Street'
                             placeholder='Enter Street'
                             fullWidth
+                            style={regInputs}
                             type="text"
                             name='street'
                             value={user.street}
@@ -230,11 +252,14 @@ const Registration = () => {
                             />
                             
                             {/* <InputLabel id="demo-simple-select-label">State</InputLabel> */}
-                            <Select
+                            <Grid style={{display: 'flex', }}>
+                                <Select
+                                variant='standard'
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={selectedState}
                                 label="State"
+                                style={{marginRight:'20px', padding:'2px 0'}}
                                 onChange={e => handleStateSelect(e)}>
                                 <MenuItem value="">Select the state</MenuItem>
                                 {states.map((state, key) => (
@@ -242,17 +267,21 @@ const Registration = () => {
                                     {state}
                                 </MenuItem>
                                 ))}
-                            </Select>
+                                </Select>
+                                
 
-                            <TextField
-                            label='Postal Code'
-                            placeholder='Enter Postal Code'
-                            fullWidth
-                            type="text"
-                            name='postalCode'
-                            value={user.postalCode}
-                            onChange={handleChange}
-                            />
+                                <TextField
+                                variant='standard'
+                                label='Postal Code'
+                                placeholder='Enter Postal Code'
+                                type="text"
+                                name='postalCode'
+                                style={{ width: '95px'}}
+                                value={user.postalCode}
+                                onChange={handleChange}
+                                />
+                            </Grid>
+                            
                         
                         <Button type='submit' color='primary' fullWidth variant='contained' style={btnStyle}>Register</Button>
                 </form>

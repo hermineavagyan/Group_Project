@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { Avatar, Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
-import AudiotrackIcon from '@material-ui/icons/Audiotrack'
+import { Avatar, Button, Grid, Paper, TextField, Typography } from '@mui/material'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 
 
 
@@ -15,19 +15,23 @@ const Login = (props) => {
     const navigate = useNavigate()
 
     const paperStyle = {
-        padding: '20px',
-        height: '50vh',
-        maxHeight: '440px',
+        padding: '30px',
+        height: '28vh',
+        minHeight: '425px',
         width: '300px',
         margin: '20px auto'
     }
 
     const btnStyle = {
-        margin:'20px 0',
+        margin:'20px 0 40px 0',
         backgroundColor: '#9f29ad'
     }
 
     const avatarStyle = {backgroundColor: '#fe902d'}
+
+    const loginInputs = {
+        padding:'10px 0',
+    }
 
 
     const login = async (e) => {
@@ -62,13 +66,15 @@ const Login = (props) => {
                 
             {/* <Typography variant='h2' align='center' style={{margin: '50px 0'}}>MyMusician</Typography> */}
                 <Paper elevation={10} style={paperStyle}>
-                <p>{errorMessage ? errorMessage : ''}</p>
+                
                     <form onSubmit={login}>
                     <Grid align='center'>
                         <Avatar style={avatarStyle}><AudiotrackIcon/></Avatar>
                         <h2 className='title'>Login</h2>
+                        <Typography style={{color:'red'}}>{errorMessage ? errorMessage : ''}</Typography>
                     </Grid>
                         <TextField 
+                        variant='standard'
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
@@ -76,8 +82,10 @@ const Login = (props) => {
                         name='email'
                         value={email}
                         onChange={(e)=>setEmail(e.target.value)}
+                        style={loginInputs}
                         />
                         <TextField
+                        variant='standard'
                         label='Password'
                         placeholder='Enter Password'
                         fullWidth
@@ -85,10 +93,11 @@ const Login = (props) => {
                         name='password'
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
+                        style={loginInputs}
                         />
                         <Button type='submit' color='primary' fullWidth variant='contained' style={btnStyle}>Sign In</Button>
                         <Typography align='center'>
-                            <Link to={"/registration"}>Create An Account</Link>
+                            <Link style={{color:'black',}} to={"/registration"}>Create An Account</Link>
                         </Typography>
                     
                     </form>

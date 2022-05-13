@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import { Paper, Container, CardMedia, Button, Box,  Typography, Grid } from '@material-ui/core'
+import { Paper, Button, Typography, Grid } from '@mui/material'
 import NavBar from './NavBar'
 import MyContext from './MyContext'
 
