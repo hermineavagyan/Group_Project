@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { AppBar, Container, Toolbar, Box, Button, IconButton, TextField, Menu, MenuItem, ListItemIcon, Tooltip } from '@mui/material'
+import React, { useEffect, useContext } from 'react'
+import { AppBar, Container, Toolbar, Box, IconButton, TextField, Menu, MenuItem, ListItemIcon, Tooltip } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -71,10 +71,10 @@ const NavBar = (props) => {
                     noWrap
                     href={"/home"}
                     >
-                    <img src={require('../img/mymusician.png')} alt="logo" style={{width:'100%'}} />
+                    <img src={require('../img/mymusician.png')} alt="logo" style={{width:'80%'}} />
                     </Link>
                 </Toolbar>
-                <form className={`${dontDisplaySearch}`} style={{width:"260px"}}>
+                <form className={`${dontDisplaySearch}`} style={{width:"260px", marginRight:'20px'}}>
                     <TextField 
                     label='Search'
                     name='search'
@@ -83,7 +83,7 @@ const NavBar = (props) => {
                     style={{margin: '0 auto', width:'80%'}}
                     InputProps= {{
                         sx: {
-                            bgcolor: 'rgba(255, 255, 255, 0.666)',
+                            bgcolor: 'rgba(255, 255, 255, 0.60)',
                         },
                         
                     }}

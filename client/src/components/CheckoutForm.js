@@ -196,6 +196,7 @@ const CheckoutForm = (props) => {
                         <form id="payment-form" onSubmit={handleSubmit}>
                             <CardElement id="card-element" />
                             <button id="pay-button">Place your order</button>
+
                         </form>
                         
                     </div>

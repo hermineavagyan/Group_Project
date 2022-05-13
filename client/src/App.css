@@ -19,7 +19,7 @@
 .checkout-main {
   display: flex;
   margin-top: 30px!important;
-  width: 998px;
+  width: 50%;
   height: 100%;
   margin: 0 auto;
   text-align: center;
@@ -36,15 +36,16 @@
   margin-top: 30px;
   padding: 9px 18px 9px 18px;
   float: left;
-  background-color: #635bff;
+  background-color: #9f29ad;
   border-radius: 5px;
   color: rgba(255, 255, 255, 0.786);
   font-weight: 700;
   border: none;
+  transition: filter 300ms;
 }
 
 #pay-button:hover {
-  background-color: #0a2540;
+  filter: brightness(1.2);
   cursor: pointer;
 }
 
@@ -84,7 +85,7 @@
   text-align: left;
   margin-block-start: 20px;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 30px;
   font-weight: 500;
 }
 
